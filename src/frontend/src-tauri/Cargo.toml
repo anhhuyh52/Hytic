@@ -1,0 +1,30 @@
+[package]
+name = "hytic"
+version = "0.1.0"
+description = "Hytic – Local-first photo editor and color grading tool"
+authors = ["Hytic"]
+edition = "2024"
+
+[lib]
+name = "hytic_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[workspace]
+members = [
+    ".",
+    "crates/hytic_engine"
+]
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-fs = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-clipboard-manager = "2"
+tauri-plugin-shell = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+hytic_engine = { path = "crates/hytic_engine" }
+tokio = { version = "1", features = ["sync", "macros"] }

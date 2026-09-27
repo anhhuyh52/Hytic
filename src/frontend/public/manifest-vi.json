@@ -1,0 +1,26 @@
+{
+  "name": "Hytic — Chỉnh sửa ảnh RAW",
+  "short_name": "Hytic",
+  "id": "app.hytic.vi",
+  "description": "Trình chỉnh sửa ảnh RAW và màu điện ảnh riêng tư ngay trong trình duyệt.",
+  "start_url": "/vi?utm_campaign=pwa&utm_source=standalone&el=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#1e1e21",
+  "background_color": "#1e1e21",
+  "icons": [
+    {
+      "src": "/assets/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

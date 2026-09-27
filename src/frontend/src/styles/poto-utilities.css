@@ -1,0 +1,327 @@
+/*
+ * Poto utility classes — rebuilt from scratch to match the legacy
+ * package.min.css atomic system that the legacy DOM is composed from
+ * (flex-row, pd-x-050, gap-050, rounded-full, text-xs, ...). Values match
+ * the legacy modular scale exactly.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ── Flex / layout ──────────────────────────────────────────────────── */
+.flex-row {
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.center {
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.x-center {
+  justify-content: center;
+}
+.y-center {
+  align-items: center;
+  align-content: center;
+}
+.x-between {
+  justify-content: space-between;
+}
+.x-around {
+  justify-content: space-around;
+}
+.x-end {
+  justify-content: flex-end;
+}
+.x-start {
+  justify-content: flex-start;
+}
+.y-bottom {
+  align-items: flex-end;
+  align-content: flex-end;
+}
+.y-top {
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.align-center {
+  align-items: center;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+.flex-shrink {
+  flex: 0 1 auto;
+}
+.flex-grow {
+  flex: 1 1 auto;
+}
+.flex-1 {
+  flex: 1;
+}
+
+/* ── Position ───────────────────────────────────────────────────────── */
+.pos-rel {
+  position: relative;
+}
+.pos-abs {
+  position: absolute;
+}
+.pos-fixed {
+  position: fixed;
+}
+
+/* ── Sizing ─────────────────────────────────────────────────────────── */
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.w-100 {
+  width: 1rem;
+}
+.h-100 {
+  height: 1rem;
+}
+.w-150 {
+  width: 1.563rem;
+}
+.h-150 {
+  height: 1.563rem;
+}
+.w-200 {
+  width: 2.441rem;
+}
+.w-475 {
+  width: 28.422rem;
+}
+.square {
+  aspect-ratio: 1;
+}
+.max-w-3\/5 {
+  max-width: 60%;
+}
+.max-w-5\/6 {
+  max-width: 83.3333%;
+}
+.max-h-5\/6 {
+  max-height: 83.3333%;
+}
+.max-w-2\/3 {
+  max-width: 66.6667%;
+}
+.min-w-0 {
+  min-width: 0;
+}
+
+/* ── Gap ────────────────────────────────────────────────────────────── */
+.gap-025 {
+  gap: 0.262rem;
+}
+.gap-050 {
+  gap: 0.512rem;
+}
+.gap-075 {
+  gap: 0.8rem;
+}
+.gap-100 {
+  gap: 1rem;
+}
+.gap-150 {
+  gap: 1.563rem;
+}
+
+/* ── Padding ────────────────────────────────────────────────────────── */
+.pd-025 {
+  padding: 0.262rem;
+}
+.pd-050 {
+  padding: 0.512rem;
+}
+.pd-075 {
+  padding: 0.8rem;
+}
+.pd-100 {
+  padding: 1rem;
+}
+.pd-150 {
+  padding: 1.563rem;
+}
+.pd-x-025 {
+  padding-left: 0.262rem;
+  padding-right: 0.262rem;
+}
+.pd-x-050 {
+  padding-left: 0.512rem;
+  padding-right: 0.512rem;
+}
+.pd-x-075 {
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+}
+.pd-x-100 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.pd-x-175 {
+  padding-left: 1.953rem;
+  padding-right: 1.953rem;
+}
+.pd-y-025 {
+  padding-top: 0.262rem;
+  padding-bottom: 0.262rem;
+}
+.pd-y-050 {
+  padding-top: 0.512rem;
+  padding-bottom: 0.512rem;
+}
+.pd-y-075 {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+.pd-y-100 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.pd-y-150 {
+  padding-top: 1.563rem;
+  padding-bottom: 1.563rem;
+}
+.pd-t-050 {
+  padding-top: 0.512rem;
+}
+.pd-t-100 {
+  padding-top: 1rem;
+}
+.pd-b-100 {
+  padding-bottom: 1rem;
+}
+.pd-l-050 {
+  padding-left: 0.512rem;
+}
+
+/* ── Margin ─────────────────────────────────────────────────────────── */
+.mg-l-050 {
+  margin-left: 0.512rem;
+}
+.mg-l-100 {
+  margin-left: 1rem;
+}
+.mg-r-050 {
+  margin-right: 0.512rem;
+}
+.mg-r-auto {
+  margin-right: auto;
+}
+.mg-l-auto {
+  margin-left: auto;
+}
+.mg-y-050 {
+  margin-top: 0.512rem;
+  margin-bottom: 0.512rem;
+}
+
+/* ── Radius ─────────────────────────────────────────────────────────── */
+.rounded-100 {
+  border-radius: 5px;
+}
+.rounded-200 {
+  border-radius: 10px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+
+/* ── Typography ─────────────────────────────────────────────────────── */
+.text-xs {
+  font-size: 0.65rem;
+}
+.text-s {
+  font-size: 0.75rem;
+}
+.text-m {
+  font-size: 0.9rem;
+}
+.text-l {
+  font-size: 1.1rem;
+}
+.text-semibold {
+  font-weight: 600;
+}
+.text-bold {
+  font-weight: 700;
+}
+.align-left {
+  text-align: left;
+}
+.align-center {
+  text-align: center;
+}
+.text-darker {
+  color: var(--theme-text-000);
+}
+.text-uppercase {
+  text-transform: uppercase;
+}
+.text-nowrap {
+  white-space: nowrap;
+}
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Visual ─────────────────────────────────────────────────────────── */
+.opacity-05 {
+  opacity: 0.5;
+}
+.opacity-025 {
+  opacity: 0.25;
+}
+.opacity-075 {
+  opacity: 0.75;
+}
+.object-cover {
+  object-fit: cover;
+}
+.object-contain {
+  object-fit: contain;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.overflow-auto {
+  overflow: auto;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.bg-higher-000 {
+  background-color: var(--theme-higher-000);
+}
+.bg-higher-100 {
+  background-color: var(--theme-higher-100);
+}
+.bg-surface-100 {
+  background-color: var(--theme-surface-100);
+}
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.hidden,
+[hidden] {
+  display: none !important;
+}

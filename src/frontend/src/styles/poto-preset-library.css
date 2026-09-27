@@ -1,0 +1,1453 @@
+/*
+ * Preset Library overlay + preset-panel styles — rebuilt to match the legacy
+ * library (official-pack grid with preset_packs thumbnails) and the in-panel
+ * preset list (search / packs+presets scroll-lists / library / generate / empty).
+ */
+
+/* ── Library overlay ────────────────────────────────────────────────── */
+.poto-lib-backdrop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--theme-lower-200);
+  backdrop-filter: blur(2px);
+  pointer-events: all;
+  z-index: 20;
+}
+.poto-lib {
+  display: flex;
+  flex-direction: column;
+  width: min(820px, 100%);
+  max-height: 88%;
+  background: var(--theme-surface-100);
+  border: 1px solid var(--theme-higher-200);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+.poto-lib__head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1rem 1.25rem 0.25rem;
+}
+.poto-lib__head img.icon {
+  width: 22px;
+  height: 22px;
+}
+.poto-lib__heading {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.poto-lib__title {
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+.poto-lib__close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--theme-text-000);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.35rem 0.7rem;
+  border-radius: 8px;
+}
+.poto-lib__close:hover {
+  background: var(--theme-higher-100);
+  color: var(--theme-text-100);
+}
+.poto-lib__sub {
+  margin: 0;
+  padding: 0;
+  font-size: 0.75rem;
+  color: var(--theme-text-000);
+  line-height: 1.5;
+}
+.poto-lib__tabs {
+  display: flex;
+  gap: 1.25rem;
+  padding: 0 1.25rem;
+  border-bottom: 1px solid var(--theme-higher-100);
+}
+.poto-lib__tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--theme-text-000);
+  font-size: 0.82rem;
+  padding: 0.6rem 0;
+  cursor: pointer;
+}
+.poto-lib__tab.active {
+  color: var(--theme-text-100);
+  border-bottom-color: var(--theme-primary);
+}
+.poto-lib__body {
+  padding: 1.25rem;
+  overflow-y: auto;
+}
+
+.poto-pack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
+.poto-pack {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 168px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-size: cover;
+  background-position: center;
+  isolation: isolate;
+}
+.poto-pack::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.86));
+  z-index: -1;
+}
+.poto-pack__body {
+  padding: 0.85rem;
+}
+.poto-pack__name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+}
+.poto-pack__desc {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0.3rem 0 0.65rem;
+  line-height: 1.45;
+}
+.poto-pack__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+.poto-pack__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--theme-white);
+  color: #000;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.42rem 0.9rem;
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.poto-pack__btn img {
+  width: 14px;
+  height: 14px;
+}
+.poto-pack__btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+.poto-pack.installed .poto-pack__btn {
+  background: var(--theme-green-soft);
+  color: #06210a;
+}
+.poto-pack__btn--secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.poto-pack__btn--secondary.is-warning {
+  color: #1e1e21;
+  background: var(--theme-yellow-soft);
+}
+.poto-lib__message {
+  margin: 0 0 0.85rem;
+  padding: 0.62rem 0.75rem;
+  border: 1px solid var(--theme-higher-200);
+  border-radius: 10px;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+.poto-lib__message.is-success {
+  color: var(--theme-green-soft);
+  border-color: color-mix(in oklab, var(--theme-green-soft) 34%, var(--theme-higher-200));
+  background: color-mix(in oklab, var(--theme-green-soft) 10%, transparent);
+}
+.poto-lib__message.is-error {
+  color: var(--theme-red-soft);
+  border-color: color-mix(in oklab, var(--theme-red-soft) 34%, var(--theme-higher-200));
+  background: color-mix(in oklab, var(--theme-red-soft) 10%, transparent);
+}
+
+/* ── In-panel preset list ───────────────────────────────────────────── */
+.poto-presets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.poto-presets__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.poto-presets__search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  height: 34px;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid color-mix(in oklab, var(--theme-higher-100) 70%, transparent);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 34% 20%, rgba(255, 255, 255, 0.04), transparent 58%),
+    color-mix(in oklab, var(--theme-surface-100) 82%, var(--theme-black));
+  box-shadow:
+    inset 3px 3px 7px rgba(17, 17, 17, 0.78),
+    inset -2px -2px 5px rgba(46, 46, 46, 0.42);
+}
+.poto-presets__search img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+.poto-presets__search input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--theme-text-100);
+  font-size: 0.74rem;
+}
+.poto-presets__iconbtn {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in oklab, var(--theme-higher-100) 70%, transparent);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255, 255, 255, 0.04), transparent 55%),
+    color-mix(in oklab, var(--theme-surface-100) 82%, var(--theme-black));
+  box-shadow:
+    5px 5px 12px rgba(17, 17, 17, 0.82),
+    -3px -3px 9px rgba(46, 46, 46, 0.42),
+    inset 0.5px 0.5px 1px rgba(255, 255, 255, 0.035);
+  cursor: pointer;
+}
+.poto-presets__iconbtn:hover {
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255, 255, 255, 0.055), transparent 55%),
+    color-mix(in oklab, var(--theme-surface-100) 92%, var(--theme-black));
+  transform: translateY(-1px);
+}
+.poto-presets__iconbtn img {
+  width: 16px;
+  height: 16px;
+}
+
+.poto-presets__pack-filter {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid color-mix(in oklab, var(--theme-higher-100) 68%, transparent);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 46%),
+    color-mix(in oklab, var(--theme-surface-050) 88%, var(--theme-black));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    4px 4px 10px rgba(17, 17, 17, 0.45);
+}
+.poto-presets__pack-filter span {
+  color: #777680;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.poto-presets__pack-filter select {
+  min-width: 0;
+  width: 100%;
+  height: 28px;
+  padding: 0 1.75rem 0 0.7rem;
+  border: 1px solid color-mix(in oklab, var(--theme-higher-100) 64%, transparent);
+  border-radius: 999px;
+  outline: none;
+  background: linear-gradient(180deg, var(--theme-surface-100), var(--theme-surface-050));
+  color: #aaa9b2;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.poto-presets__pack-filter option {
+  background: #1e1e1e;
+  color: #c8c8c8;
+}
+
+.poto-presets__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 280px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 7px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.poto-presets__list::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+.poto-preset-row {
+  display: grid;
+  grid-template-columns: 7px minmax(0, 1fr);
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 42px;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: linear-gradient(
+    180deg,
+    var(--theme-higher-050),
+    color-mix(in oklab, var(--theme-surface-050) 88%, var(--theme-black))
+  );
+  box-shadow:
+    0 7px 14px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+.poto-preset-row:hover {
+  border-color: var(--theme-higher-200);
+  background: linear-gradient(
+    180deg,
+    var(--theme-higher-100),
+    color-mix(in oklab, var(--theme-surface-100) 84%, var(--theme-black))
+  );
+  transform: translateY(-1px);
+}
+.poto-preset-row.active {
+  border-color: color-mix(in oklab, var(--theme-primary) 62%, transparent);
+  background:
+    radial-gradient(
+      circle at 8% 50%,
+      color-mix(in oklab, var(--theme-primary) 16%, transparent),
+      transparent 42%
+    ),
+    linear-gradient(180deg, var(--theme-higher-100), var(--theme-surface-050));
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--theme-primary) 30%, transparent),
+    0 8px 18px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.poto-preset-row__mark {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--theme-higher-200);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+.poto-preset-row.active .poto-preset-row__mark {
+  background: var(--theme-primary);
+  box-shadow:
+    0 0 10px color-mix(in oklab, var(--theme-primary) 72%, transparent),
+    0 0 0 2px rgba(0, 0, 0, 0.28);
+}
+.poto-preset-row__main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  min-width: 0;
+}
+.poto-preset-row__name {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--theme-text-100);
+  font-size: 0.78rem;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.poto-preset-row__pack {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--theme-text-000);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.62rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.poto-preset-row__edited {
+  font-size: 0.56rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--theme-yellow-soft);
+}
+.poto-presets__no-results {
+  padding: 1.1rem 0.75rem;
+  color: var(--theme-text-000);
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+.poto-presets__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+.poto-presets__empty img {
+  width: 120px;
+  max-width: 70%;
+  opacity: 0.9;
+  border-radius: 10px;
+}
+.poto-presets__empty p {
+  font-size: 0.74rem;
+  color: var(--theme-text-000);
+  margin: 0;
+}
+.poto-presets__explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: none;
+  background: var(--theme-white);
+  color: #000;
+  font-size: 0.74rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.poto-presets__explore img {
+  width: 15px;
+  height: 15px;
+}
+.poto-presets__iconbtn.loading img {
+  animation: poto-gen-spin 900ms linear infinite;
+  opacity: 0.6;
+}
+
+.poto-context-menu {
+  position: fixed;
+  z-index: 80;
+  min-width: 132px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--theme-higher-200);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--theme-surface-100) 94%, var(--theme-black));
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  opacity: 0;
+  transform: translateY(-3px) scale(0.975);
+  transform-origin: top left;
+  transition:
+    opacity 110ms ease,
+    transform 130ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.poto-context-menu.is-ready {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.poto-context-menu.is-closing {
+  pointer-events: none !important;
+  opacity: 0;
+  transform: translateY(-2px) scale(0.985);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poto-context-menu {
+    transition-duration: 1ms;
+  }
+}
+
+.poto-context-menu button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 28px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--theme-text-100);
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+  text-align: left;
+}
+
+.poto-context-menu button:hover:not(:disabled) {
+  background: var(--theme-higher-100);
+}
+
+.poto-context-menu button:disabled {
+  opacity: 0.36;
+  cursor: default;
+}
+
+.poto-context-menu context-title,
+.poto-context-menu context-item,
+.poto-context-menu context-separator,
+.poto-context-menu context-radio {
+  display: flex;
+}
+
+.poto-context-menu context-title {
+  min-height: 24px;
+  align-items: center;
+  padding: 0 10px 3px;
+  color: var(--theme-text-000);
+  font-size: 0.68rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.poto-context-menu context-item {
+  align-items: center;
+  justify-content: space-between;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 7px;
+  color: var(--theme-text-100);
+  font-size: 0.72rem;
+  font-weight: 650;
+  cursor: pointer;
+  text-align: left;
+}
+
+.poto-context-menu context-item:focus-visible {
+  outline: 1px solid var(--theme-higher-400);
+  outline-offset: -1px;
+  background: var(--theme-higher-100);
+}
+
+.poto-context-menu context-item.text-red {
+  color: var(--theme-red-soft, #ff7777);
+}
+
+.poto-context-menu context-item img {
+  width: 14px;
+  height: 14px;
+  margin-left: 18px;
+  opacity: 0.72;
+  object-fit: contain;
+}
+
+.poto-context-menu context-item.text-red img {
+  filter: brightness(0) saturate(100%) invert(57%) sepia(79%) saturate(1551%) hue-rotate(319deg)
+    brightness(108%) contrast(101%);
+}
+
+.poto-context-menu context-item:hover:not([disabled]):not([selected]) {
+  background: var(--theme-higher-100);
+}
+
+.poto-context-menu context-item[disabled],
+.poto-context-menu context-item[selected] {
+  opacity: 0.36;
+  cursor: default;
+}
+
+.poto-context-menu context-item[selected]::after {
+  content: "✓";
+  opacity: 0.82;
+}
+
+.poto-context-menu context-separator {
+  height: 1px;
+  margin: 3px 4px;
+  background: var(--theme-higher-100);
+}
+
+.poto-context-menu context-radio {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.poto-context-menu .none {
+  display: none;
+}
+
+/* ── Spectra preset generator ───────────────────────────────────────── */
+.poto-gen-backdrop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--theme-lower-200);
+  backdrop-filter: blur(2px);
+  pointer-events: all;
+  z-index: 21;
+}
+.poto-gen {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: min(420px, 98%);
+  background: var(--theme-surface-100);
+  border: 1px solid var(--theme-higher-200);
+  border-radius: 18px;
+  padding: 0.75rem;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+.poto-gen__title {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 650;
+  padding: 0.25rem 0.25rem 0.5rem;
+}
+.poto-gen__title sup {
+  font-size: 0.55rem;
+  font-weight: 800;
+  opacity: 0.5;
+}
+.poto-gen__subtitle {
+  margin-left: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 400;
+  color: var(--theme-text-000);
+  opacity: 0.7;
+}
+.poto-gen__main {
+  display: flex;
+  gap: 0.4rem;
+}
+.poto-gen__grid {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+.poto-gen__cell {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  box-shadow: 0 0 4px var(--theme-black);
+  opacity: 0.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity 250ms,
+    background-color 250ms;
+  cursor: pointer;
+}
+.poto-gen__cell.origin {
+  box-shadow: none;
+}
+.poto-gen__cell::before {
+  content: "";
+  width: 14px;
+  aspect-ratio: 1;
+  border: 2px solid var(--theme-lower-000);
+  background: var(--theme-text-100);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 2000ms ease-out;
+}
+.poto-gen__cell.selected {
+  opacity: 1;
+  cursor: grab;
+}
+.poto-gen__cell.selected::before {
+  transform: scale(1);
+  transition-duration: 200ms;
+}
+.poto-gen__grid.dragging,
+.poto-gen__grid.dragging .poto-gen__cell {
+  cursor: grabbing;
+}
+.poto-gen__side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: var(--theme-surface-050);
+  padding: 8px;
+  border-radius: 10px;
+}
+.poto-gen__round {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--theme-higher-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.poto-gen__round:hover {
+  background: var(--theme-higher-200);
+}
+.poto-gen__round img {
+  width: 12px;
+  height: 12px;
+}
+.poto-gen__round[data-action="generate"] img {
+  width: 16px;
+  height: 16px;
+}
+.poto-gen__round.loading img {
+  animation: poto-gen-spin 900ms linear infinite;
+  opacity: 0.6;
+}
+.poto-gen__save {
+  margin-top: auto;
+}
+.poto-gen__save.saved {
+  background: var(--theme-green-soft);
+}
+@keyframes poto-gen-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.poto-gen__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--theme-surface-050);
+  padding: 8px 8px 8px 12px;
+  border-radius: 10px;
+}
+.poto-gen__variant {
+  margin-right: auto;
+  font-size: 0.68rem;
+  color: var(--theme-text-000);
+  opacity: 0.7;
+}
+.poto-gen__btn {
+  border: none;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 650;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+}
+.poto-gen__btn.tertiary {
+  background: none;
+  color: var(--theme-text-000);
+}
+.poto-gen__btn.tertiary:hover {
+  color: var(--theme-text-100);
+}
+.poto-gen__btn.primary {
+  background: var(--theme-white);
+  color: #000;
+}
+
+/* ── Modal backdrop polish: library + generator ─────────────────────── */
+.poto-lib-backdrop,
+.poto-gen-backdrop {
+  position: fixed;
+  inset: 0;
+  padding: clamp(12px, 4vw, 32px);
+  background:
+    radial-gradient(circle at 24% 18%, rgba(255, 90, 26, 0.08), transparent 34%),
+    radial-gradient(circle at 78% 82%, rgba(120, 120, 150, 0.06), transparent 34%),
+    rgba(9, 9, 10, 0.72);
+  backdrop-filter: blur(12px) saturate(0.88);
+  -webkit-backdrop-filter: blur(12px) saturate(0.88);
+}
+
+.poto-lib-backdrop::before,
+.poto-gen-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at center, #000 0%, transparent 76%);
+  opacity: 0.5;
+}
+
+.poto-lib,
+.poto-gen {
+  position: relative;
+  border: 1px solid color-mix(in oklab, var(--theme-higher-200) 72%, transparent);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 42%),
+    color-mix(in oklab, var(--theme-surface-050) 92%, var(--theme-black));
+  box-shadow:
+    28px 28px 70px rgba(0, 0, 0, 0.56),
+    -10px -10px 32px rgba(46, 46, 46, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.poto-lib {
+  width: min(860px, 100%);
+  max-height: min(88dvh, 760px);
+  border-radius: 20px;
+}
+
+.poto-lib__head {
+  padding: 1rem 1.25rem 0.45rem;
+}
+
+.poto-lib__head img.icon {
+  padding: 4px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--theme-higher-100) 68%, transparent);
+  box-shadow:
+    inset 2px 2px 5px rgba(17, 17, 17, 0.72),
+    inset -1px -1px 4px rgba(46, 46, 46, 0.36);
+}
+
+.poto-lib__title,
+.poto-gen__title {
+  color: var(--theme-text-100);
+  letter-spacing: 0;
+}
+
+.poto-lib__close,
+.poto-gen__btn,
+.poto-gen__round {
+  border: 1px solid color-mix(in oklab, var(--theme-higher-100) 70%, transparent);
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255, 255, 255, 0.04), transparent 55%),
+    color-mix(in oklab, var(--theme-surface-100) 82%, var(--theme-black));
+  box-shadow:
+    5px 5px 12px rgba(17, 17, 17, 0.82),
+    -3px -3px 9px rgba(46, 46, 46, 0.42),
+    inset 0.5px 0.5px 1px rgba(255, 255, 255, 0.035);
+}
+
+.poto-lib__close:hover,
+.poto-gen__round:hover,
+.poto-gen__btn:hover {
+  background:
+    radial-gradient(circle at 36% 24%, rgba(255, 255, 255, 0.055), transparent 55%),
+    color-mix(in oklab, var(--theme-surface-100) 92%, var(--theme-black));
+  transform: translateY(-1px);
+}
+
+.poto-lib__tabs {
+  border-bottom-color: color-mix(in oklab, var(--theme-higher-100) 78%, transparent);
+}
+
+.poto-lib__tab.active {
+  color: var(--theme-text-100);
+  border-bottom-color: var(--theme-primary);
+}
+
+.poto-lib__body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.poto-lib__body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.poto-pack {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.poto-pack::before {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.88)),
+    radial-gradient(circle at 50% 8%, rgba(255, 255, 255, 0.14), transparent 44%);
+}
+
+.poto-pack__btn,
+.poto-gen__btn.primary {
+  background:
+    radial-gradient(circle at 35% 22%, rgba(255, 255, 255, 0.08), transparent 56%),
+    linear-gradient(180deg, color-mix(in oklab, var(--theme-primary) 82%, #2b211a), #8c3218);
+  color: var(--accent-text);
+  box-shadow:
+    4px 4px 10px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.poto-pack.installed .poto-pack__btn,
+.poto-gen__save.saved {
+  background:
+    radial-gradient(circle at 35% 22%, rgba(255, 255, 255, 0.09), transparent 56%),
+    linear-gradient(
+      180deg,
+      var(--theme-green-soft),
+      color-mix(in oklab, var(--theme-green-soft) 52%, #102412)
+    );
+  color: #061d09;
+}
+
+.poto-pack .poto-pack__btn--secondary {
+  background:
+    radial-gradient(circle at 35% 22%, rgba(255, 255, 255, 0.05), transparent 56%),
+    color-mix(in oklab, var(--theme-surface-100) 72%, var(--theme-black));
+  color: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    3px 3px 8px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.poto-pack .poto-pack__btn--secondary.is-warning {
+  background:
+    radial-gradient(circle at 35% 22%, rgba(255, 255, 255, 0.08), transparent 56%),
+    linear-gradient(
+      180deg,
+      var(--theme-yellow-soft),
+      color-mix(in oklab, var(--theme-yellow-soft) 58%, #4a3412)
+    );
+  color: #17120a;
+}
+
+.poto-gen-backdrop {
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(4, 5, 6, 0.7), rgba(7, 7, 8, 0.82)), rgba(8, 8, 9, 0.78);
+  backdrop-filter: blur(14px) saturate(0.82);
+  -webkit-backdrop-filter: blur(14px) saturate(0.82);
+}
+
+.poto-gen {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: min(560px, 96vw);
+  max-height: min(90dvh, 720px);
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018) 42%,
+      rgba(0, 0, 0, 0.08)
+    ),
+    linear-gradient(135deg, rgba(27, 29, 32, 0.96), rgba(12, 13, 15, 0.98));
+  box-shadow:
+    0 34px 90px rgba(0, 0, 0, 0.58),
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.025) inset;
+  color: var(--theme-text-100);
+  outline: none;
+}
+
+.poto-gen__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.1rem 0.15rem 0;
+}
+
+.poto-gen__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+}
+
+.poto-gen__title {
+  padding: 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 0.98rem;
+  font-weight: 720;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.poto-gen__title sup {
+  font-size: 0.55rem;
+  font-weight: 800;
+  opacity: 0.62;
+}
+
+.poto-gen__pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0 0.55rem;
+  border: 1px solid rgba(214, 185, 136, 0.18);
+  border-radius: 999px;
+  background: rgba(214, 185, 136, 0.07);
+  color: rgba(235, 213, 176, 0.82);
+  font-size: 0.62rem;
+  font-weight: 760;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.poto-gen__subtitle {
+  margin: 0 0 0 0.25rem;
+  color: rgba(214, 218, 224, 0.58);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.poto-gen__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 48px;
+  gap: 0.75rem;
+  min-height: 0;
+}
+
+.poto-gen__grid {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  grid-template-rows: repeat(7, minmax(0, 1fr));
+  gap: 3px;
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 15px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.024) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(22, 24, 27, 0.96), rgba(12, 13, 15, 0.98));
+  background-size:
+    34px 34px,
+    34px 34px,
+    auto;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    inset 0 0 22px rgba(0, 0, 0, 0.34);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.poto-gen__cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 6px;
+  opacity: 0.34;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 1px 5px rgba(0, 0, 0, 0.38);
+  cursor: pointer;
+  transition:
+    opacity 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+  -webkit-touch-callout: none;
+}
+
+.poto-gen__cell:hover {
+  opacity: 0.66;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.poto-gen__cell.origin {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.045),
+    rgba(255, 255, 255, 0.01)
+  ) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 1px 5px rgba(0, 0, 0, 0.32);
+}
+
+.poto-gen__cell::before {
+  content: "";
+  width: 10px;
+  aspect-ratio: 1;
+  border: 2px solid rgba(9, 10, 11, 0.92);
+  border-radius: 50%;
+  background: rgba(244, 241, 232, 0.94);
+  box-shadow: 0 0 18px rgba(235, 213, 176, 0.28);
+  transform: scale(0);
+  transition: transform 2000ms ease-out;
+}
+
+.poto-gen__cell.selected {
+  opacity: 1;
+  border-color: rgba(235, 213, 176, 0.62);
+  box-shadow:
+    0 0 0 1px rgba(235, 213, 176, 0.42),
+    0 0 22px rgba(235, 213, 176, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13);
+  cursor: grab;
+}
+
+.poto-gen__cell.selected::before {
+  transform: scale(1);
+  transition-duration: 200ms;
+}
+
+.poto-gen__grid.dragging,
+.poto-gen__grid.dragging .poto-gen__cell {
+  cursor: grabbing;
+}
+
+.poto-gen__side,
+.poto-gen__footer {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+    rgba(18, 19, 22, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+.poto-gen__side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.45rem;
+  border-radius: 16px;
+}
+
+.poto-gen__round {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+    rgba(24, 25, 28, 0.95);
+  color: rgba(255, 255, 255, 0.86);
+  cursor: pointer;
+}
+
+.poto-gen__round:hover,
+.poto-gen__btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(235, 213, 176, 0.24);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.025)),
+    rgba(30, 31, 35, 0.96);
+}
+
+.poto-gen__round img {
+  width: 15px;
+  height: 15px;
+  opacity: 0.82;
+}
+
+.poto-gen__round.loading img {
+  animation: poto-gen-spin 900ms linear infinite;
+  opacity: 0.62;
+}
+
+.poto-gen__save {
+  margin-top: auto;
+}
+
+.poto-gen__save.saved {
+  border-color: rgba(155, 216, 143, 0.28);
+  background:
+    linear-gradient(180deg, rgba(155, 216, 143, 0.18), rgba(155, 216, 143, 0.08)),
+    rgba(18, 27, 19, 0.96);
+}
+
+.poto-gen__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 48px;
+  padding: 0.45rem 0.5rem 0.45rem 0.75rem;
+  border-radius: 16px;
+}
+
+.poto-gen__variant {
+  min-width: 0;
+  margin-right: auto;
+  color: rgba(214, 218, 224, 0.62);
+  font-size: 0.69rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.poto-gen__variant strong,
+.poto-gen__variant [data-id] {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.poto-gen__variant [data-id] {
+  color: rgba(244, 241, 232, 0.86);
+}
+
+.poto-gen__btn {
+  min-height: 34px;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 720;
+  cursor: pointer;
+}
+
+.poto-gen__btn.tertiary {
+  background: transparent;
+  color: rgba(214, 218, 224, 0.68);
+  box-shadow: none;
+}
+
+.poto-gen__btn.primary {
+  border-color: rgba(235, 213, 176, 0.3);
+  background: linear-gradient(180deg, rgba(235, 213, 176, 0.94), rgba(179, 137, 78, 0.96));
+  color: #12100d;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+@media (max-width: 640px) {
+  .poto-lib-backdrop,
+  .poto-gen-backdrop {
+    align-items: stretch;
+    padding: 10px;
+  }
+
+  .poto-lib,
+  .poto-gen {
+    max-height: calc(100dvh - 20px);
+    border-radius: 16px;
+  }
+
+  .poto-lib__body {
+    padding: 0.85rem;
+  }
+
+  .poto-pack-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .poto-gen {
+    justify-content: center;
+  }
+}
+
+/* Legacy preset-generator uses a blocking popup-backdrop with `backdrop: false`.
+ * It intercepts outside input without tinting or blurring the editor. */
+.poto-gen-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  pointer-events: all;
+}
+
+.poto-gen-backdrop::before {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .poto-gen-backdrop {
+    align-items: flex-end;
+    justify-content: center;
+  }
+}
+
+/* ============================================================
+   Cinematic flat — Preset Library overlay
+   Flattens the modal + image-backed pack cards to match the
+   in-panel preset list and Color Match panel: graphite surfaces,
+   hairline borders, no neumorphism/glow/gold, restrained accent.
+   ============================================================ */
+.poto-lib {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: #18181a;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.poto-lib__head img.icon {
+  background: #222226;
+  box-shadow: none;
+}
+
+.poto-lib__title {
+  color: #f4f4f5;
+}
+
+.poto-lib__sub {
+  color: #9a9aa0;
+}
+
+.poto-lib__close {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  background: #222226;
+  box-shadow: none;
+  color: #c8c8cc;
+}
+
+.poto-lib__close:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: #29292e;
+  color: #fff;
+  transform: none;
+}
+
+.poto-lib__tabs {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.poto-lib__tab {
+  color: #9a9aa0;
+}
+
+.poto-lib__tab.active {
+  color: #f4f4f5;
+  border-bottom-color: #E1DCC9;
+}
+
+/* Image-forward pack card: flat frame, cinematic scrim, legible text. */
+.poto-pack {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: none;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.poto-pack:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.poto-pack::before {
+  background: linear-gradient(
+    180deg,
+    rgba(16, 16, 18, 0.08) 0%,
+    rgba(16, 16, 18, 0.55) 52%,
+    rgba(16, 16, 18, 0.93) 100%
+  );
+}
+
+.poto-pack__name {
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.62);
+}
+
+.poto-pack__desc {
+  color: rgba(255, 255, 255, 0.78);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Primary install button: flat near-white for clear contrast. */
+.poto-pack__btn,
+.poto-pack.installed .poto-pack__btn {
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+.poto-pack__btn {
+  background: #f4f4f5;
+  color: #16140f;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.poto-pack__btn:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.poto-pack.installed .poto-pack__btn {
+  background: #3faa43;
+  color: #06210a;
+}
+
+.poto-pack .poto-pack__btn--secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow: none;
+}
+
+.poto-pack .poto-pack__btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.poto-pack .poto-pack__btn--secondary.is-warning {
+  background: #ddbc57;
+  color: #17120a;
+}
+
+.poto-lib__message.is-success {
+  color: #7fd08a;
+}
+
+.poto-lib__message.is-error {
+  color: #ff8a78;
+}

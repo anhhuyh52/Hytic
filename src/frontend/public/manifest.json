@@ -1,0 +1,26 @@
+{
+  "name": "Hytic",
+  "short_name": "Hytic",
+  "id": "app.hytic",
+  "description": "RAW photo editor and AI color grading tool for cinema and photography workflows.",
+  "start_url": "/?utm_campaign=pwa&utm_source=standalone&el=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#1e1e21",
+  "background_color": "#1e1e21",
+  "icons": [
+    {
+      "src": "/assets/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

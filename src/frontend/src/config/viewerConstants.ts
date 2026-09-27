@@ -1,0 +1,9 @@
+export const VIEWER_BACKGROUND_COLOR = "#1C1C1E";
+export const VIEWER_EMPTY_BACKGROUND_COLOR = "#1C1C1E";
+export const VIEWER_CANVAS_CLEAR_COLOR = "#1C1C1E";
+
+export const VIEWER_FIT_PADDING = 0.92;
+export const VIEWER_MIN_ZOOM = 0.05;
+export const VIEWER_MAX_ZOOM = 16;
+
+export const DEFAULT_VIEWER_ZOOM_LABEL_PRECISION = 0;

@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Clean Product White",
+    "data": {
+      "s": {
+        "colorVolume": [0.54, 0.56],
+        "colorBalance": [0.5, 0.5],
+        "shadows": [0.5, 0.48],
+        "highlights": [0.52, 0.56],
+        "separation": 0.5
+      },
+      "d": {
+        "lumaVsDensity": [[0, 0.48], [0.25, 0.5], [0.5, 0.52], [0.75, 0.54], [1, 0.55]],
+        "chromaVsDensity": [[0, 0.48], [0.333, 0.5], [0.667, 0.53], [1, 0.54]]
+      },
+      "l": {
+        "lumaVsLuma": [[0, 0.0], [0.167, 0.16], [0.333, 0.34], [0.833, 0.875], [1, 1]],
+        "expVsLuma": [[0, 0.505], [0.333, 0.51], [0.667, 0.525], [1, 0.545]],
+        "blackPoint": [0.5, 0.5, 0.5],
+        "whitePoint": [0.515, 0.515, 0.515]
+      },
+      "r": {
+        "spotlight": { "amount": 0.05, "contrast": 0.58, "bias": 0.5, "focus": 0.55, "centerX": 0.5, "centerY": 0.5 }
+      }
+    },
+    "meta": { "description": "Bright commercial color with clean whites and crisp product contrast." }
+  },
+  {
+    "name": "Campaign Skin Clean",
+    "data": {
+      "s": {
+        "colorVolume": [0.53, 0.535],
+        "colorBalance": [0.52, 0.505],
+        "shadows": [0.47, 0.45],
+        "highlights": [0.55, 0.59],
+        "separation": 0.52
+      },
+      "d": {
+        "lumaVsDensity": [[0, 0.47], [0.25, 0.49], [0.5, 0.515], [0.75, 0.535], [1, 0.55]],
+        "hueVsDensity": [[0, 0.5], [0.167, 0.535], [0.333, 0.505], [0.583, 0.485], [0.805, 0.49], [1, 0.5]]
+      },
+      "l": {
+        "lumaVsLuma": [[0, 0.02], [0.167, 0.155], [0.333, 0.335], [0.833, 0.865], [1, 0.99]]
+      },
+      "r": {
+        "diffusion": { "amount": 0.04, "fog": 0.02, "threshold": 0.18, "focusProtect": 0.32, "centerX": 0.5, "centerY": 0.5, "quality": "medium" }
+      }
+    },
+    "meta": { "description": "Clean campaign color tuned for polished skin and controlled saturation." }
+  }
+]

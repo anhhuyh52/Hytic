@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Editorial Warm Negative",
+    "data": {
+      "s": {
+        "colorVolume": [0.56, 0.57],
+        "colorBalance": [0.535, 0.512],
+        "shadows": [0.43, 0.39],
+        "highlights": [0.57, 0.63],
+        "separation": 0.5
+      },
+      "d": {
+        "lumaVsDensity": [[0, 0.46], [0.25, 0.5], [0.5, 0.54], [0.75, 0.56], [1, 0.58]],
+        "hueVsDensity": [[0, 0.52], [0.167, 0.53], [0.333, 0.49], [0.583, 0.48], [0.805, 0.51], [1, 0.52]]
+      },
+      "l": {
+        "lumaVsLuma": [[0, 0.015], [0.167, 0.145], [0.333, 0.32], [0.833, 0.86], [1, 0.985]],
+        "expVsLuma": [[0, 0.49], [0.333, 0.5], [0.667, 0.515], [1, 0.53]],
+        "blackPoint": [0.48, 0.49, 0.51],
+        "whitePoint": [0.53, 0.515, 0.5]
+      },
+      "r": {
+        "grain": { "amount": 0.18, "acutance": 0.1, "resolution": 0.46, "colorAmount": 0.42 },
+        "halation": { "amount": 0.06, "spill": 0.54, "hue": 0.56, "saturation": 0.48, "quality": "medium" }
+      }
+    },
+    "meta": { "description": "Warm restrained editorial negative with gentle print contrast." }
+  },
+  {
+    "name": "Muted Cover Stock",
+    "data": {
+      "s": {
+        "colorVolume": [0.48, 0.54],
+        "colorBalance": [0.515, 0.49],
+        "shadows": [0.46, 0.43],
+        "highlights": [0.54, 0.58],
+        "separation": 0.48
+      },
+      "d": {
+        "lumaVsDensity": [[0, 0.44], [0.25, 0.47], [0.5, 0.5], [0.75, 0.52], [1, 0.55]],
+        "chromaVsDensity": [[0, 0.46], [0.333, 0.5], [0.667, 0.53], [1, 0.55]]
+      },
+      "l": {
+        "lumaVsLuma": [[0, 0.04], [0.167, 0.16], [0.333, 0.335], [0.833, 0.835], [1, 0.965]],
+        "hueVsLuma": [[0, 0.51], [0.167, 0.5], [0.333, 0.49], [0.583, 0.5], [0.805, 0.52], [1, 0.51]]
+      },
+      "r": {
+        "grain": { "amount": 0.12, "acutance": 0.08, "resolution": 0.5, "colorAmount": 0.35 }
+      }
+    },
+    "meta": { "description": "Softly muted color with clean blacks for portraits and fashion." }
+  }
+]

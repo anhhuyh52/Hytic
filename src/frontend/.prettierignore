@@ -1,0 +1,7 @@
+dist
+node_modules
+public
+scripts/_legacy_aces
+src/engine/io/codecs/wlbr.js
+src/engine/reference/srpStatic.js
+*.log

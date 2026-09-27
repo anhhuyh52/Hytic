@@ -1,0 +1,3317 @@
+/*
+ * Poto panel controls — rebuilt from scratch (sliders, knobs, toggles,
+ * value rows) styled against the poto token layer.
+ */
+
+control-panel {
+  margin-bottom: 2px;
+}
+
+.poto-panel-body {
+  --poto-cardinal-size: clamp(160px, 22vmin, 300px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.poto-panel-note {
+  font-size: 0.72rem;
+  color: var(--theme-text-000);
+  line-height: 1.5;
+}
+
+.poto-panel-note .scope {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--theme-primary-higher);
+}
+
+/* Spot Removal */
+.retouch-panel {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.8fr) minmax(12rem, 1.4fr) auto;
+  gap: 0.7rem;
+  align-items: start;
+}
+
+.retouch-panel__list,
+.retouch-panel__options,
+.retouch-panel__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.retouch-panel__list {
+  max-height: 11rem;
+  overflow: auto;
+}
+
+.retouch-panel button {
+  min-height: 2rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--panel-control-border);
+  border-radius: var(--r-m);
+  background: var(--panel-control-bg);
+  color: var(--panel-control-text);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.retouch-panel button:hover,
+.retouch-panel button.is-hovered {
+  border-color: var(--panel-control-border-hover);
+}
+
+.retouch-panel button.active,
+.retouch-panel button.is-selected {
+  border-color: var(--panel-control-accent);
+  background: color-mix(in srgb, var(--panel-control-accent) 18%, var(--panel-control-bg));
+}
+
+.retouch-panel button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.retouch-panel__spot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.retouch-panel__index {
+  display: inline-grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  font-variant-numeric: tabular-nums;
+}
+
+.retouch-panel__empty {
+  min-height: 4.5rem !important;
+  border-style: dashed !important;
+}
+
+.retouch-panel__mode {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
+.retouch-panel__actions {
+  min-width: 7rem;
+}
+
+.spot-retouch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.spot-retouch-overlay__connector-shadow,
+.spot-retouch-overlay__connector {
+  pointer-events: none;
+  fill: none;
+}
+
+.spot-retouch-overlay__connector-shadow {
+  stroke: rgba(0, 0, 0, 0.34);
+  stroke-width: 3;
+}
+
+.spot-retouch-overlay__connector {
+  stroke: #fff;
+  stroke-width: 1;
+}
+
+.spot-retouch-overlay__outline-shadow,
+.spot-retouch-overlay__outline {
+  fill: none;
+  pointer-events: none;
+}
+
+.spot-retouch-overlay__outline-shadow {
+  stroke: rgba(0, 0, 0, 0.34);
+  stroke-width: 3;
+}
+
+.spot-retouch-overlay__outline {
+  stroke: rgba(255, 255, 255, 0.62);
+  stroke-width: 1;
+}
+
+.spot-retouch-overlay__spot.is-selected .spot-retouch-overlay__outline,
+.spot-retouch-overlay__spot.is-hovered .spot-retouch-overlay__outline {
+  stroke: #fff;
+}
+
+.spot-retouch-overlay__spot.is-dragging .spot-retouch-overlay__destination .spot-retouch-overlay__outline,
+.spot-retouch-overlay__spot.is-dragging .spot-retouch-overlay__destination .spot-retouch-overlay__outline-shadow {
+  opacity: 0;
+}
+
+.spot-retouch-overlay__hit,
+.spot-retouch-overlay__handle-hit {
+  fill: transparent;
+  stroke: none;
+  pointer-events: all;
+  cursor: move;
+}
+
+.spot-retouch-overlay__handle-shadow {
+  fill: rgba(0, 0, 0, 0.34);
+  pointer-events: none;
+}
+
+.spot-retouch-overlay__handle {
+  fill: #fff;
+  stroke: rgba(0, 0, 0, 0.45);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.spot-retouch-overlay__handle-hit {
+  cursor: nwse-resize;
+}
+
+.spot-retouch-overlay.is-pan .spot-retouch-overlay__hit,
+.spot-retouch-overlay.is-pan .spot-retouch-overlay__handle-hit,
+.spot-retouch-overlay__spot.is-disabled .spot-retouch-overlay__hit,
+.spot-retouch-overlay__spot.is-disabled .spot-retouch-overlay__handle-hit {
+  pointer-events: none;
+}
+
+.spot-retouch-overlay.is-pan .spot-retouch-overlay__spot,
+.spot-retouch-overlay__spot.is-disabled {
+  opacity: 0.45;
+}
+
+.spot-retouch-toolbar {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  z-index: 9999;
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.65rem;
+  background: rgba(24, 24, 27, 0.82);
+  backdrop-filter: blur(14px);
+  transform: translateX(-50%);
+}
+
+.spot-retouch-toolbar button {
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.45rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.spot-retouch-toolbar button.active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.spot-retouch-toolbar button:disabled {
+  opacity: 0.35;
+}
+
+@media (max-width: 900px) {
+  .retouch-panel {
+    grid-template-columns: minmax(7rem, 0.75fr) minmax(10rem, 1.25fr) auto;
+  }
+
+  .spot-retouch-toolbar {
+    bottom: calc(var(--aside-panel-height, 0px) + 0.75rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .retouch-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .retouch-panel__list {
+    flex-direction: row;
+    max-height: none;
+    overflow-x: auto;
+  }
+
+  .retouch-panel__actions {
+    flex-direction: row;
+  }
+}
+
+.poto-overlay-launch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.poto-overlay-launch__head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--theme-text-100);
+}
+
+.poto-overlay-launch__head img {
+  width: 22px;
+  height: 22px;
+}
+
+.poto-overlay-launch p {
+  margin: 0;
+}
+
+.poto-overlay-launch .action-button {
+  align-self: flex-start;
+  min-height: 30px;
+}
+
+.poto-overlay-launch__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.7rem;
+  align-items: center;
+}
+
+.poto-overlay-launch__label {
+  font-size: 0.72rem;
+  color: var(--ui-text-050, rgba(226, 226, 230, 0.5));
+}
+
+.poto-overlay-launch__label strong {
+  font-weight: 700;
+  color: var(--ui-text-075, rgba(226, 226, 230, 0.76));
+  font-variant-numeric: tabular-nums;
+}
+
+.poto-overlay-launch__badge {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--ui-text-075, rgba(226, 226, 230, 0.76));
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+
+/* Distort */
+.poto-distort {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.75fr) minmax(12rem, 1.5fr) minmax(7rem, 0.6fr);
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.poto-distort-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.poto-distort-actions--bottom {
+  justify-content: flex-end;
+}
+
+.poto-distort-button,
+.poto-distort-toggle {
+  min-height: 2rem;
+  padding: 0 0.7rem;
+  border: 1px solid var(--ui-line-100, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  background: var(--ui-bg-100, #202022);
+  color: var(--ui-text-075, rgba(226, 226, 230, 0.76));
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.poto-distort-button:hover,
+.poto-distort-toggle:hover,
+.poto-distort-button.is-active,
+.poto-distort-toggle.is-active {
+  border-color: var(--ui-line-300, rgba(255, 255, 255, 0.22));
+  background: var(--ui-active-bg, rgba(255, 255, 255, 0.1));
+  color: var(--ui-text-100, rgba(246, 246, 247, 0.92));
+}
+
+.poto-distort-sliders {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.perspective-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.perspective-grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  background: transparent;
+  z-index: 1;
+}
+
+.perspective-grid__line {
+  fill: none;
+  /* Reference grid: mix(color, white, 0.5) in the screen pass. */
+  stroke: rgba(255, 255, 255, 0.5);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.perspective-handle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  touch-action: none;
+  z-index: 2;
+}
+
+.perspective-handle:active {
+  cursor: grabbing;
+}
+
+.perspective-reset {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(24, 24, 27, 0.72);
+  color: rgba(245, 245, 247, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* ── slider row ─────────────────────────────────────────────────────── */
+.poto-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid var(--panel-control-border);
+  border-radius: var(--r-m);
+  background: var(--panel-control-bg);
+}
+
+.poto-control__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.72rem;
+}
+
+.poto-control__label {
+  color: var(--panel-control-text);
+}
+
+.poto-control__value {
+  color: var(--panel-control-text);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.68rem;
+}
+
+.poto-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--panel-control-border);
+  outline: none;
+  cursor: pointer;
+}
+
+.poto-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--theme-white);
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.poto-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: var(--theme-white);
+  cursor: pointer;
+}
+
+.poto-range.bipolar {
+  background: linear-gradient(90deg, var(--theme-higher-200) 50%, var(--theme-higher-200) 50%);
+}
+
+/* ── toggle row ─────────────────────────────────────────────────────── */
+.poto-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.poto-toggle__switch {
+  width: 34px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--panel-control-border);
+  position: relative;
+  transition: background 150ms;
+  flex: 0 0 auto;
+}
+
+.poto-toggle__switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--panel-control-text);
+  transition: transform 150ms;
+}
+
+.poto-toggle[aria-checked="true"] .poto-toggle__switch {
+  background: var(--panel-control-accent);
+}
+
+.poto-toggle[aria-checked="true"] .poto-toggle__switch::after {
+  transform: translateX(16px);
+  background: var(--theme-black);
+}
+
+/* ── knob ───────────────────────────────────────────────────────────── */
+.poto-knob {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  user-select: none;
+}
+
+.poto-knob__dial {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  background-image: url(/assets/knob_background.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid var(--panel-control-border);
+  border-radius: 50%;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.poto-knob__pointer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 28px;
+  background: var(--panel-control-text);
+  border-radius: 2px;
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%) rotate(var(--knob-angle, 0deg));
+}
+
+.poto-knob__label {
+  font-size: 0.68rem;
+  color: var(--panel-control-text);
+  text-align: center;
+}
+
+.poto-knob__value {
+  font-size: 0.62rem;
+  color: var(--panel-control-text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.poto-knob-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-around;
+}
+
+/* ── Halation / Diffusion FX: knob (+ focus pad) on the left, value-sliders right ── */
+.poto-fx-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.poto-fx-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 0 0 auto;
+  order: 0;
+}
+
+.poto-fx-left:has(.poto-two-axis-pad) {
+  flex-direction: row;
+  align-items: center;
+}
+
+.poto-fx-row>.poto-two-axis-pad {
+  align-self: center;
+  order: 2;
+  margin-left: auto;
+  width: 100%;
+}
+
+/* Handle hover: glow + scale — targets the inner glow div and dot */
+.poto-two-axis-pad__glow {
+  opacity: 0 !important;
+}
+
+.poto-two-axis-pad:hover .poto-two-axis-pad__glow {
+  opacity: 1 !important;
+}
+
+.poto-two-axis-pad__dot {
+  transform: scale(1);
+}
+
+.poto-two-axis-pad:hover .poto-two-axis-pad__dot {
+  transform: scale(1.35);
+}
+
+.poto-fx-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  flex: 1 1 12rem;
+  min-width: 11rem;
+  justify-content: center;
+  order: 1;
+}
+
+/* Spotlight and Diffusion position controls live in the viewport. Keep the
+   remaining knob/slider row stretched and centered like the previous panel
+   layout instead of collapsing toward the start edge. */
+.poto-fx-row--viewport-center {
+  width: 100%;
+  min-height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.poto-fx-row--viewport-center .poto-fx-left {
+  align-self: center;
+}
+
+.poto-fx-row--viewport-center .poto-fx-sliders {
+  align-self: center;
+}
+
+/* ── spline curve editor ────────────────────────────────────────────── */
+.poto-spotlight {
+  position: relative;
+  display: flex;
+  width: 100%;
+  gap: 4px;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 8px;
+  padding: 5%;
+  background: var(--panel-control-bg);
+  border: 1px solid var(--panel-control-border);
+  overflow: hidden;
+}
+
+.poto-spotlight__visual {
+  position: relative;
+  width: 150px;
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+}
+
+.poto-spotlight .poto-knob {
+  position: absolute;
+  inset: 0;
+  gap: 0;
+  width: 100%;
+  height: 100%;
+  --hue: 75;
+  --sat: 0.15;
+  --sat-internal: max(0.1, var(--knob-value, 0) * var(--sat));
+  --start-color: oklch(90% 0.1 var(--hue));
+  --end-color: oklch(67% var(--sat-internal) var(--hue));
+}
+
+.poto-spotlight .poto-knob__dial {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(var(--start-color) 180deg,
+      var(--end-color) var(--knob-va, 180deg),
+      transparent 360deg);
+  box-shadow: none;
+  cursor: ns-resize;
+  user-select: none;
+  touch-action: none;
+}
+
+.poto-spotlight .poto-knob__dial::before {
+  content: "";
+  position: absolute;
+  inset: 2.5%;
+  border-radius: 50%;
+  background: url(/assets/knob_background.svg) no-repeat center / cover;
+}
+
+.poto-spotlight .poto-knob__dial::after {
+  content: attr(aria-label);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-top: 32px;
+  color: var(--theme-text-000);
+  opacity: 0.65;
+  font-size: 11px;
+  text-align: center;
+}
+
+.poto-spotlight .poto-knob__pointer {
+  display: none;
+}
+
+.poto-spotlight .poto-knob__center {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  color: var(--theme-text-100);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  transform: translate(-50%, calc(-50% - 8px));
+}
+
+.poto-spotlight .poto-knob__label {
+  display: none;
+}
+
+.poto-spotlight__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 50%;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.poto-spotlight .poto-control {
+  gap: 0.25rem;
+  width: 100%;
+  height: 2rem;
+  font-size: 0.8rem;
+}
+
+.poto-spotlight .poto-control__label,
+.poto-spotlight .poto-control__value {
+  color: var(--panel-control-text);
+  font-size: 0.8rem;
+}
+
+.poto-spotlight .poto-range {
+  height: 5px;
+  background: var(--track-background, var(--lum-gradient));
+}
+
+.poto-spotlight .poto-control[aria-disabled="true"] {
+  opacity: 0.25 !important;
+  pointer-events: none !important;
+}
+
+.poto-spotlight .poto-range--amber {
+  background: linear-gradient(90deg, #ffd791, #ffb400);
+}
+
+.poto-spotlight .poto-range::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--theme-white);
+}
+
+.poto-spotlight .poto-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--theme-white);
+}
+
+.poto-spotlight__focus {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.poto-spotlight__pad-trigger,
+.poto-spotlight__focus-done {
+  position: relative;
+  width: 1.75rem;
+  height: 1.75rem;
+  min-height: 0;
+  aspect-ratio: 1;
+  flex: none;
+  margin-right: 0.75rem;
+  padding: 7px;
+  border: 1px solid var(--panel-control-border);
+  border-radius: 4px;
+  background-color: var(--panel-control-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: 50% 50%;
+  background-image:
+    linear-gradient(to right, var(--theme-higher-200) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--theme-higher-200) 1px, transparent 1px);
+  cursor: pointer;
+}
+
+.poto-spotlight__pad-trigger:hover,
+.poto-spotlight__pad-trigger:focus-visible {
+  outline: none;
+}
+
+.poto-spotlight__pad-dot {
+  display: block;
+  position: static;
+  width: 6px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--theme-text-100);
+  box-shadow: none;
+  transform: none;
+  pointer-events: none;
+}
+
+.poto-spotlight__focus-done {
+  background: var(--theme-primary-lower);
+  background-image: none;
+  color: transparent;
+  box-shadow: none;
+}
+
+.poto-spotlight__focus-done::after {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 78'%3E%3Cpath d='M78 19 29 68h-1L0 40v-2l7-6h2l20 20 41-41h1l7 6v2z' fill='white'/%3E%3C/svg%3E");
+  background-color: transparent;
+  border-radius: 0;
+  width: 10px;
+  height: 10px;
+}
+
+.poto-spotlight__pad-trigger[disabled],
+.poto-spotlight__focus-done[disabled] {
+  opacity: 0.25 !important;
+  pointer-events: none !important;
+}
+
+.poto-spotlight__visual .poto-pad {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  gap: 0;
+}
+
+.poto-spotlight__visual .poto-pad__topline,
+.poto-spotlight__visual .poto-pad__labels {
+  display: none;
+}
+
+.poto-spotlight__visual .poto-pad__field {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  background:
+    linear-gradient(to right,
+      transparent calc(50% - 0.5px),
+      var(--theme-higher-200) 50%,
+      transparent calc(50% + 0.5px)),
+    linear-gradient(to bottom,
+      transparent calc(50% - 0.5px),
+      var(--theme-higher-200) 50%,
+      transparent calc(50% + 0.5px)),
+    var(--theme-surface-000) !important;
+  border: 2px solid var(--theme-higher-200);
+  box-shadow: none;
+  cursor: crosshair;
+}
+
+.poto-spotlight__visual .poto-pad__field::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--theme-lower-000);
+  pointer-events: none;
+}
+
+.poto-spotlight__visual .poto-pad__field::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border-color: var(--theme-higher-200);
+  pointer-events: none;
+}
+
+.poto-spotlight__visual .poto-pad__cross {
+  display: none;
+}
+
+.poto-spotlight__visual .poto-pad__handle {
+  width: 45px;
+  height: 45px;
+  border: none;
+  background: var(--theme-text-100);
+  box-shadow: none;
+}
+
+@media (orientation: landscape) {
+  .poto-spotlight__focus-done::after {
+    margin-top: -4px;
+  }
+}
+
+.poto-curve {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+curve-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+  min-width: 48px;
+  justify-content: space-around;
+}
+
+curve-controls>div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.poto-curve__btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-s);
+  border: 1px solid var(--panel-control-border);
+  background: var(--panel-control-bg);
+  color: var(--panel-control-text);
+  font-size: 0.7rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.poto-curve__btn[data-action="points"] {
+  cursor: ew-resize;
+}
+
+.poto-curve__btn:hover {
+  background: var(--panel-control-bg);
+  border-color: var(--panel-control-border-hover);
+}
+
+.poto-curve__btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.poto-curve__label {
+  color: var(--theme-text-100);
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1;
+  opacity: 0.55;
+  text-align: center;
+}
+
+spline-interface {
+  position: relative;
+  display: block;
+  flex: 1 1 auto;
+  aspect-ratio: 779 / 384;
+  background-image: url(/assets/spline_background.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  overflow: visible;
+  isolation: isolate;
+  touch-action: none;
+}
+
+.poto-curve__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.poto-curve__points {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ── rolling slider (offset all curve points) ───────────────────────── */
+rolling-slider,
+.poto-rolling {
+  --roll: 0px;
+  --num-lines: 5;
+  position: relative;
+  flex: 0 0 auto;
+  width: 1.75rem;
+  min-height: 100%;
+  border-radius: var(--r-s);
+  border: 1px solid var(--panel-control-border);
+  background: var(--panel-control-bg);
+  overflow: hidden;
+  cursor: ns-resize;
+  touch-action: none;
+  pointer-events: all;
+}
+
+rolling-slider span,
+.poto-rolling span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--panel-control-border);
+  transform: translateY(var(--roll));
+}
+
+rolling-slider.dragging span,
+.poto-rolling.dragging span {
+  transition: none;
+}
+
+rolling-slider span:last-of-type,
+.poto-rolling span:last-of-type {
+  top: var(--marker-top, 50%);
+  height: 3px;
+  transform: translateY(-50%);
+  background: var(--panel-control-text);
+}
+
+.poto-curve__point {
+  position: absolute;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--panel-control-text);
+  border: 2px solid var(--panel-control-border);
+  box-shadow: none;
+  cursor: grab;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  touch-action: none;
+}
+
+.poto-curve__point:hover {
+  background: var(--theme-text-000);
+}
+
+/* ── 2-axis pad ─────────────────────────────────────────────────────── */
+.poto-pad {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.poto-pad__field {
+  --inlay-color: var(--panel-control-bg);
+  --inlay-padding: 4px;
+  --line-color: var(--panel-control-border);
+  position: relative;
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border-radius: var(--r-m);
+  border: 1px solid var(--panel-control-border);
+  background: var(--panel-control-bg);
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.poto-pad__cross {
+  position: absolute;
+  background: var(--panel-control-border);
+  pointer-events: none;
+}
+
+.poto-pad__cross--x {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+}
+
+.poto-pad__cross--y {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+}
+
+.poto-pad__handle {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--panel-control-text);
+  border: 1px solid var(--panel-control-border);
+  box-shadow: none;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.poto-pad__labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  color: var(--panel-control-text-soft);
+}
+
+/* Balance: two 2-axis pads (Exposure/Saturation + Temperature/Tint) side by side */
+.poto-balance-pads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.poto-balance-pads .poto-pad__field {
+  max-width: 100%;
+}
+
+/* ── cardinal slider (Balance pads + Scattering wheels) ──────────────── */
+.poto-cardinal-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.poto-balance-pads .poto-cardinal-col {
+  width: 100%;
+}
+
+.poto-cardinal-wheels {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  justify-content: space-around;
+}
+
+.poto-cardinal-wheels .poto-cardinal-col {
+  flex: 1 1 0;
+}
+
+.poto-cardinal-readout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.16rem 0.3rem;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 0.64rem;
+  font-weight: 600;
+  color: var(--theme-text-100);
+}
+
+/* Balance pads: legacy `.readout` — one rounded pill per pad holding two
+   icon-labels and two filled value cells (`.val` ≙ legacy `.readout-filled`). */
+.poto-balance-pads .poto-cardinal-readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  justify-content: flex-start;
+  flex: 0 0 auto;
+  width: max-content;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--panel-control-text);
+  border: 1px solid var(--panel-control-border);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+
+.poto-balance-pads .poto-cardinal-readout .poto-balance-readout-item {
+  display: flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.poto-balance-pads .poto-cardinal-readout .lbl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 0.2rem;
+  padding: 4px 8px 4px 4px;
+  color: var(--panel-control-text-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.poto-balance-pads .poto-cardinal-readout .lbl img {
+  width: 0.72rem;
+  height: 0.72rem;
+  flex: none;
+  opacity: 0.72;
+}
+
+.poto-balance-pads .poto-cardinal-readout .val {
+  flex: 0 0 auto;
+  width: 30px;
+  box-sizing: content-box;
+  padding: 4px 8px 4px 4px;
+  text-align: center;
+  border-radius: 0;
+  color: var(--panel-control-text);
+  background: var(--panel-control-border);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Scattering wheels: a single inline H/S line instead of the 2×2 grid. */
+.poto-cardinal-readout--wheel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.poto-cardinal-readout .lbl {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  gap: 0.2rem;
+  color: var(--panel-control-text-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.poto-cardinal-readout .val {
+  justify-self: end;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.poto-cardinal-readout .lbl img {
+  width: 0.7rem;
+  height: 0.7rem;
+  flex: none;
+  opacity: 0.72;
+}
+
+.poto-cardinal-readout .val {
+  padding: 0.08rem 0.35rem;
+  border-radius: 6px;
+  color: var(--panel-control-text);
+  background: var(--panel-control-border);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.poto-cardinal-readout--wheel .ic {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex: none;
+  opacity: 0.6;
+}
+
+.poto-cardinal-readout--wheel .val {
+  flex: 0 1 auto;
+  max-width: calc(100% - 1.18rem);
+}
+
+.poto-cardinal {
+  --point-color: var(--panel-control-text);
+  --line-color: var(--panel-control-border);
+  --inlay-color: var(--panel-control-bg);
+  position: relative;
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 1;
+  border-radius: var(--r-m);
+  border: 1px solid var(--panel-control-border);
+  background: var(--panel-control-bg);
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.poto-cardinal--circular {
+  border-radius: 50%;
+}
+
+.poto-cardinal__line {
+  position: absolute;
+  background: var(--line-color);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.poto-cardinal__line--x {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+}
+
+.poto-cardinal__line--y {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+}
+
+.poto-cardinal--circular .poto-cardinal__line {
+  opacity: 0.35;
+}
+
+.poto-cardinal__point {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Balance pads: legacy geometry — each column is square (`.square`) and the pad
+   flex-grows below the readout, so the pad ends up slightly landscape. */
+.poto-balance-pads .poto-cardinal-col {
+  aspect-ratio: 1;
+  gap: 0.8rem;
+  justify-content: flex-start;
+}
+
+.poto-balance-pads .poto-cardinal {
+  flex: 1 0 auto;
+  min-height: 0;
+  width: 100%;
+  max-width: none;
+  aspect-ratio: auto;
+  border-radius: 5px;
+}
+
+/* Legacy `cardinal-slider-inlay`: a neutral overlay inset by 4px that mutes the
+   gradient interior, leaving only a vivid gradient ring at the very edge. The
+   crosshair lines and handle (later in the tree) paint above it. */
+.poto-balance-pads .poto-cardinal::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  background: var(--panel-control-bg);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Flat light handle (filled dot, no ring/inlay), matching the neutral point. */
+.poto-balance-pads .poto-cardinal__point {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ffffff;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Refraction: 6 compact per-primary pads ─────────────────────────── */
+/* ── Refraction: two hexagonal sliders + link + separation ──────────── */
+.poto-refraction {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.poto-refraction__readouts {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+}
+
+.poto-refraction__readouts .readout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--theme-text-100);
+}
+
+.poto-refraction__readouts .readout .ic {
+  width: 0.95rem;
+  height: 0.95rem;
+  opacity: 0.6;
+}
+
+.poto-refraction__readouts .readout .val {
+  padding: 0.08rem 0.4rem;
+  border-radius: 6px;
+  background: var(--theme-higher-100);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.poto-refraction__sep {
+  gap: 0.4rem;
+}
+
+.poto-refraction__hexes {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-around;
+}
+
+.poto-hexagon {
+  width: 100%;
+  max-width: 160px;
+  aspect-ratio: 1;
+  touch-action: none;
+  overflow: visible;
+}
+
+.poto-hexagon__lines {
+  fill: color-mix(in srgb, var(--theme-surface-050) 60%, transparent);
+  stroke: #505052;
+  stroke-width: 1;
+  stroke-dasharray: 4 8;
+}
+
+.poto-hexagon__point {
+  fill: var(--pt, #fff);
+  stroke: var(--theme-lower-000);
+  stroke-width: 2;
+  cursor: grab;
+  transition: r 120ms ease;
+}
+
+.poto-hexagon__point.selected {
+  stroke: var(--theme-text-100);
+  stroke-width: 2.5;
+}
+
+.poto-hexagon__point:hover {
+  r: 8;
+}
+
+/* link button (Refraction) */
+.poto-linkbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--panel-control-border);
+  border-radius: 6px;
+  background: var(--panel-control-bg);
+  color: var(--panel-control-text-soft);
+  cursor: pointer;
+}
+
+.poto-linkbtn:hover {
+  border-color: var(--panel-control-border-hover);
+  background: var(--panel-control-bg);
+}
+
+.poto-linkbtn.linked {
+  background: var(--panel-control-accent);
+  border-color: var(--panel-control-accent);
+  color: var(--theme-black);
+}
+
+/* numerical slider (Refraction separation) */
+.poto-numslider {
+  min-width: 3.2rem;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--panel-control-border);
+  border-radius: 6px;
+  background: var(--panel-control-bg);
+  color: var(--panel-control-text);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  cursor: ew-resize;
+  user-select: none;
+}
+
+.poto-numslider.disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.poto-numslider input {
+  width: 3rem;
+  background: none;
+  border: none;
+  outline: none;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+}
+
+/* ── Shadow / Highlight ("rgb" panel): two linked-RGB controls ───────── */
+.poto-sh {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding: 0.6rem;
+  border: 1px solid var(--panel-control-border);
+  border-radius: var(--r-m);
+  background: var(--panel-control-bg);
+}
+
+.poto-sh-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.poto-sh-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.poto-sh-icon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.45;
+}
+
+.poto-sh-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--panel-control-border);
+  border-radius: 6px;
+  background: var(--panel-control-bg);
+  color: var(--panel-control-text-soft);
+  cursor: pointer;
+}
+
+.poto-sh-link:hover {
+  border-color: var(--panel-control-border-hover);
+  background: var(--panel-control-bg);
+}
+
+.poto-sh-link.linked {
+  background: var(--panel-control-accent);
+  border-color: var(--panel-control-accent);
+  color: var(--theme-black);
+}
+
+.poto-sh-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.55rem 0.45rem;
+  border-radius: var(--r-s);
+  background: var(--panel-control-bg);
+  border: 1px solid var(--panel-control-border);
+}
+
+.poto-sh-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.poto-sh-ch {
+  width: 0.9rem;
+  flex: 0 0 auto;
+  font-size: 0.62rem;
+  color: var(--panel-control-text-soft);
+  text-align: center;
+}
+
+.poto-sh-val {
+  width: 2.1rem;
+  flex: 0 0 auto;
+  font-size: 0.6rem;
+  color: var(--panel-control-text);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.poto-sh-range {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--sh-track, var(--theme-higher-200));
+  outline: none;
+  cursor: pointer;
+}
+
+.poto-sh-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--theme-white);
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.poto-sh-range::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  border-radius: 50%;
+  background: var(--theme-white);
+  cursor: pointer;
+}
+
+/* ── Color Match panel (legacy match-panel) ─────────────────────────────────
+ * Horizontal scroll-list of reference thumbnails (import + bypass tiles, then
+ * the built-in references) above linkable Color + Tone amount sliders. */
+.poto-match {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-height: 300px;
+}
+
+.poto-match[data-state="progress"] {
+  pointer-events: none;
+}
+
+.poto-match[state="progress"],
+match-panel[state="progress"] {
+  pointer-events: none;
+}
+
+.poto-match__list {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 4px;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: min(50vh, 400px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  content-visibility: auto;
+
+  --item-height: 50px;
+  --ld-wide: var(--item-height);
+  --ld-medium: var(--item-height);
+  --ld-short: var(--item-height);
+}
+
+.poto-match__list::-webkit-scrollbar {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .poto-match__list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+.poto-match__tile {
+  height: var(--item-height);
+  width: var(--item-height);
+  flex-grow: 1;
+  max-width: calc(2 * var(--item-height));
+  flex-shrink: 0;
+  /* from flex: none in base scroll-list */
+
+  position: relative;
+  aspect-ratio: 1;
+  min-height: 0;
+  padding: 0;
+  border: 1px solid var(--ui-line-100);
+  border-radius: 8px;
+  background: var(--ui-bg-100);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.2s ease;
+  display: block;
+}
+
+.poto-match__tile img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+    filter 0.3s ease;
+}
+
+.poto-match__tile--action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ui-bg-050);
+}
+
+.poto-match__tile--action img {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  opacity: 0.8;
+  filter: brightness(0) invert(1);
+}
+
+.poto-match__tile:hover {
+  border-color: var(--ui-line-200);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  z-index: 2;
+}
+
+.poto-match__tile:hover img {
+  transform: scale(1.05);
+}
+
+.poto-match__tile--action:hover img {
+  transform: none;
+  opacity: 1;
+}
+
+.poto-match__tile .poto-match__import-icon,
+.poto-match__tile:hover .poto-match__import-icon {
+  opacity: 0.8;
+}
+
+.poto-match__tile.is-selected {
+  border-color: var(--ui-active-border);
+  box-shadow: 0 0 0 2px var(--ui-active-border), 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.poto-match__tile.is-selected::after {
+  content: "";
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ui-active-bg);
+  box-shadow: 0 0 0 2px var(--ui-bg-050);
+}
+
+.poto-match__tile.is-missing img {
+  object-fit: contain;
+  padding: 24%;
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+
+.poto-match__controls {
+  position: relative;
+  display: block;
+  flex: 0 0 95px;
+  height: 95px;
+  overflow: hidden;
+  background: #1b1b1e;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.poto-match match-controls,
+match-panel match-controls {
+  position: relative;
+  display: block;
+  flex: 0 0 95px;
+  height: 95px;
+  overflow: hidden;
+  background: #1b1b1e;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.poto-match__info {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  height: 100%;
+  padding: 0 2rem;
+  background: linear-gradient(90deg, rgba(27, 27, 30, 0) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(27, 27, 30, 0) 100%);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.poto-match__info img {
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+  animation: poto-sparkle 4s ease-in-out infinite;
+}
+
+.poto-match__info span {
+  max-width: 460px;
+  text-align: center;
+}
+
+.poto-match__info button {
+  position: relative;
+  padding: 0 0.1rem;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.poto-match__info button::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.4;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.poto-match__info button:hover {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.poto-match__info button:hover::after {
+  opacity: 1;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes poto-sparkle {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.7));
+    opacity: 1;
+  }
+}
+
+.poto-match__progress {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3px;
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(270deg, var(--theme-red-soft, #ff5c5c), var(--theme-yellow, #ffcf4a));
+  transition: opacity 0.2s ease;
+  will-change: transform;
+}
+
+.poto-match progress-bar,
+match-panel progress-bar {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3px;
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(270deg, var(--theme-red-soft, #ff5c5c), var(--theme-yellow, #ffcf4a));
+  transition: opacity 0.2s ease;
+  will-change: transform;
+}
+
+.poto-match__sliders {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.15rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.75rem 1rem;
+  color: var(--theme-text-000);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.poto-match slider-controls,
+match-panel slider-controls {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.15rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.75rem 1rem;
+  color: var(--theme-text-000);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.poto-match__sliders>div {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.poto-match slider-controls>div,
+match-panel slider-controls>div {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.poto-match__link {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 3rem;
+  height: 3rem;
+  margin-top: 0.8rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: #222226;
+  color: #8f8e96;
+  cursor: pointer;
+  font-size: 1.35rem;
+  transition:
+    color 0.12s ease,
+    background 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.poto-match__link svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.poto-match__link img {
+  width: 0.95rem;
+  height: 0.95rem;
+  opacity: 0.78;
+}
+
+.poto-match__link.is-linked {
+  background: #29292e;
+  border-color: #E1DCC9;
+  color: #ffb499;
+}
+
+.poto-match__link:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  color: var(--theme-text-100);
+}
+
+.poto-match__status {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.3rem;
+  z-index: 2;
+  font-size: 0.72rem;
+  color: var(--theme-text-100);
+}
+
+.poto-match__status--error {
+  color: var(--theme-red, #e0564b);
+}
+
+.poto-match[data-state="active"] .poto-match__info,
+.poto-match[state="active"] .poto-match__info,
+.poto-match[data-state="progress"] .poto-match__info,
+.poto-match[state="progress"] .poto-match__info {
+  opacity: 0;
+  pointer-events: none;
+}
+
+match-panel[state="active"] info-box,
+match-panel[state="progress"] info-box {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.poto-match[data-state="active"] .poto-match__sliders,
+.poto-match[state="active"] .poto-match__sliders,
+.poto-match__sliders.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+match-panel[state="active"] slider-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.poto-match[data-state="progress"] .poto-match__sliders,
+.poto-match[state="progress"] .poto-match__sliders,
+.poto-match__sliders.is-progress {
+  opacity: 0.5;
+}
+
+match-panel[state="progress"] slider-controls {
+  opacity: 0.5;
+}
+
+.poto-match[data-state="progress"] .poto-match__progress,
+.poto-match[state="progress"] .poto-match__progress,
+.poto-match__progress.is-visible {
+  opacity: 1;
+  animation: poto-match-progress 1.75s ease-in forwards;
+}
+
+match-panel[state="progress"] progress-bar {
+  opacity: 1;
+  animation: poto-match-progress 1.75s ease-in forwards;
+}
+
+.poto-match__context {
+  position: fixed;
+  z-index: 1000;
+  min-width: 12rem;
+  padding: 0.35rem;
+  border: 1px solid var(--theme-higher-100);
+  border-radius: 8px;
+  background: var(--theme-lower-000);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.poto-match__context-title {
+  padding: 0.35rem 0.5rem;
+  color: var(--theme-text-000);
+  font-size: 0.72rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.poto-match__context button {
+  width: 100%;
+  padding: 0.45rem 0.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--theme-text-100);
+  font: inherit;
+  font-size: 0.72rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.poto-match__context button:hover:not(:disabled) {
+  background: var(--theme-higher-050);
+}
+
+.poto-match__context button:disabled {
+  color: var(--theme-text-000);
+  opacity: 0.35;
+  cursor: default;
+}
+
+@keyframes poto-match-progress {
+  0% {
+    transform: scaleX(0);
+  }
+
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .poto-match__list {
+    grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+    gap: 6px;
+    padding: 6px;
+    border-radius: 12px;
+  }
+
+  .poto-match__tile {
+    border-radius: 9px;
+  }
+
+  .poto-match__tile--action {
+    font-size: 8px;
+  }
+
+  .poto-match__sliders {
+    gap: 0.75rem;
+    padding: 0.75rem 0.65rem;
+  }
+
+  .poto-match__link {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.15rem;
+  }
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match {
+  height: 100%;
+  min-height: 0;
+  gap: 6px;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match__list {
+  --item-height: clamp(42px, 12vw, 56px);
+
+  flex: 1 1 auto;
+  min-height: 44px;
+  max-height: none;
+  align-items: center;
+  align-content: center;
+  flex-wrap: nowrap;
+  gap: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 5px 6px;
+  content-visibility: visible;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match__tile {
+  flex: 0 0 var(--item-height);
+  width: var(--item-height);
+  height: var(--item-height);
+  max-width: none;
+  border-radius: 7px;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match__tile--action img {
+  width: clamp(18px, 5vw, 24px);
+  height: clamp(18px, 5vw, 24px);
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match__controls,
+.adjustment-panels[data-layout="bottom"] .poto-match match-controls,
+.adjustment-panels[data-layout="bottom"] match-panel match-controls {
+  flex: 0 0 clamp(74px, 12dvh, 95px);
+  height: clamp(74px, 12dvh, 95px);
+  min-height: 0;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match__info {
+  gap: 0.7rem;
+  padding: 0 1rem;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match__info img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match__info span {
+  max-width: min(28rem, 100%);
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match__sliders,
+.adjustment-panels[data-layout="bottom"] .poto-match slider-controls,
+.adjustment-panels[data-layout="bottom"] match-panel slider-controls {
+  gap: 0.65rem;
+  padding: 0.55rem 0.65rem;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-match__link {
+  width: 2.1rem;
+  height: 2.1rem;
+  margin-top: 0.45rem;
+}
+
+@media (max-height: 620px) and (orientation: portrait) {
+  .adjustment-panels[data-layout="bottom"] .poto-match {
+    gap: 4px;
+  }
+
+  .adjustment-panels[data-layout="bottom"] .poto-match__list {
+    --item-height: clamp(38px, 11vw, 48px);
+
+    min-height: 40px;
+    gap: 5px;
+    padding-block: 4px;
+  }
+
+  .adjustment-panels[data-layout="bottom"] .poto-match__controls,
+  .adjustment-panels[data-layout="bottom"] .poto-match match-controls,
+  .adjustment-panels[data-layout="bottom"] match-panel match-controls {
+    flex-basis: clamp(64px, 11dvh, 78px);
+    height: clamp(64px, 11dvh, 78px);
+  }
+
+  .adjustment-panels[data-layout="bottom"] .poto-match__info {
+    padding-inline: 0.75rem;
+    font-size: 0.68rem;
+  }
+
+  .adjustment-panels[data-layout="bottom"] .poto-match__info img {
+    display: none;
+  }
+
+  .adjustment-panels[data-layout="bottom"] .poto-match__sliders,
+  .adjustment-panels[data-layout="bottom"] .poto-match slider-controls,
+  .adjustment-panels[data-layout="bottom"] match-panel slider-controls {
+    gap: 0.45rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .adjustment-panels[data-layout="bottom"] .poto-match__link {
+    width: 1.8rem;
+    height: 1.8rem;
+    margin-top: 0.3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .poto-match__tile,
+  .poto-match__tile img {
+    transition-duration: 0.01ms;
+  }
+
+  .poto-match__tile:hover,
+  .poto-match__tile:hover img {
+    transform: none;
+  }
+}
+
+reference-window.reference-window {
+  position: fixed;
+  z-index: 900;
+  display: block;
+  width: min(380px, calc(100vw - 24px));
+  border: 1px solid var(--theme-higher-100);
+  border-radius: 8px;
+  background: var(--theme-lower-000);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.reference-window.expanded {
+  width: min(720px, calc(100vw - 24px));
+}
+
+.reference-window__header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.2rem;
+  padding: 0.35rem;
+  cursor: move;
+  background: var(--theme-surface-050);
+  border-bottom: 1px solid var(--theme-higher-050);
+}
+
+.reference-window__title {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--theme-text-100);
+  font-size: 0.76rem;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reference-window__select {
+  flex: 0 1 10.5rem;
+  min-width: 0;
+  height: 1.7rem;
+  border: 1px solid var(--theme-higher-100);
+  border-radius: 6px;
+  background: var(--theme-surface-100);
+  color: var(--theme-text-100);
+  font: inherit;
+  font-size: 0.72rem;
+}
+
+.reference-window__icon,
+.reference-window__close {
+  flex: none;
+  height: 1.7rem;
+  border: 1px solid var(--theme-higher-100);
+  border-radius: 6px;
+  background: var(--theme-higher-050);
+  color: var(--theme-text-100);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.reference-window__icon {
+  width: 1.7rem;
+  padding: 0;
+}
+
+.reference-window__icon img {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.reference-window__close {
+  padding: 0 0.6rem;
+}
+
+.reference-window__body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.reference-window.expanded .reference-window__body {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.reference-window__reference,
+.reference-window__scope {
+  width: 100%;
+  height: 190px;
+  display: block;
+  border-radius: 6px;
+  background: var(--theme-black);
+}
+
+.reference-window__scope {
+  height: 230px;
+}
+
+.reference-window.expanded .reference-window__reference,
+.reference-window.expanded .reference-window__scope {
+  height: 300px;
+}
+
+/* ── Bottom-rail responsive sizing ──────────────────────────────────────────
+   Applied when the panel rail sits below the viewer (portrait / narrow
+   landscape). Panel content height is roughly 114–266px so controls need to
+   be more compact than the side-rail defaults.                              */
+
+/* Spline curve: shrink gap + let canvas fill height without overflowing */
+.adjustment-panels[data-layout="bottom"] .poto-spline-curve {
+  gap: 0.25rem;
+  height: 100%;
+  min-height: 0;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-spline-curve__interface {
+  aspect-ratio: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-spline-curve__controls {
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+/* Shrink the curve control buttons slightly */
+.adjustment-panels[data-layout="bottom"] .poto-spline-curve__controls button {
+  width: 28px;
+  height: 28px;
+}
+
+/* FX panels (halation / diffusion / texture / spotlight): keep knob beside
+   sliders even when the panel is short; tighten spacing */
+.adjustment-panels[data-layout="bottom"] .poto-fx-row {
+  flex-wrap: nowrap;
+  gap: 0.6rem;
+  align-items: center;
+  height: 100%;
+  min-height: 0;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-fx-left {
+  gap: 0.4rem;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-fx-left:has(.poto-two-axis-pad) {
+  gap: 0.5rem;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-knob__dial {
+  width: 52px;
+  height: 52px;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-knob__pointer {
+  height: 22px;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-fx-sliders {
+  gap: 0.35rem;
+  min-width: 9rem;
+}
+
+/* Balance pads: reduce gap so both pads stay side by side */
+.adjustment-panels[data-layout="bottom"] .poto-balance-pads {
+  gap: 0.5rem;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-balance-pads .poto-cardinal-col {
+  gap: 0.4rem;
+}
+
+/* Scattering wheels: tighter gap */
+.adjustment-panels[data-layout="bottom"] .poto-cardinal-wheels {
+  gap: 0.5rem;
+}
+
+/* Shadow / Highlight columns: reduce inner padding */
+.adjustment-panels[data-layout="bottom"] .poto-sh {
+  gap: 0.5rem;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-sh-sliders {
+  padding: 0.35rem 0.35rem;
+  gap: 0.25rem;
+}
+
+/* Panel body gap */
+.adjustment-panels[data-layout="bottom"] .poto-panel-body {
+  gap: 0.5rem;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-distort {
+  grid-template-columns: auto minmax(9rem, 1fr) auto;
+  gap: 0.55rem;
+  height: 100%;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-distort-sliders {
+  gap: 0.25rem;
+}
+
+.adjustment-panels[data-layout="bottom"] .poto-distort-button,
+.adjustment-panels[data-layout="bottom"] .poto-distort-toggle {
+  min-height: 1.75rem;
+  padding-inline: 0.5rem;
+  font-size: 0.66rem;
+}
+
+@media (max-width: 640px) {
+  .poto-distort {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 0.55rem;
+  }
+
+  .poto-distort-actions--bottom {
+    justify-content: flex-start;
+  }
+}
+
+/* ── masking panel ───────────────────────────────────────────────── */
+.adjustment-panels.masking-panel {
+  background: #262629;
+}
+
+.masking-panel__section,
+.masking-panel__cta-row {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.masking-panel__header {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: 1.5rem 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 14px 16px;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  flex-shrink: 0;
+  cursor: pointer;
+  outline: none;
+  transition: background 0.15s ease;
+}
+
+.masking-panel__header:hover {
+  color: white;
+}
+
+.masking-panel__header:focus-visible {
+  background: rgba(36, 36, 38, 0.92);
+  box-shadow: inset 0 0 0 1px var(--ui-focus);
+}
+
+.masking-panel__header--editing {
+  grid-template-columns: auto 1fr auto;
+  cursor: default;
+  width: 100%;
+  padding: 10px 10px 0 10px;
+}
+
+.masking-panel__header--editing:hover {
+  color: inherit;
+}
+
+.masking-panel__cancel-btn,
+.masking-panel__apply-btn {
+  min-height: 32px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.masking-panel__cancel-btn {
+  color: var(--ui-text-075);
+  background: var(--ui-bg-100);
+  border: 1px solid var(--ui-line-100);
+}
+
+.masking-panel__cancel-btn:hover,
+.masking-panel__cancel-btn:focus-visible {
+  color: var(--ui-text-100);
+  background: var(--ui-bg-150);
+}
+
+.masking-panel__editing-title {
+  overflow: hidden;
+  color: var(--ui-text-100);
+  font-size: 0.78rem;
+  font-weight: 650;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.masking-panel__back-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--ui-text-075);
+  border-radius: 6px;
+  background: var(--ui-bg-100);
+  border: 1px solid var(--ui-line-100);
+  transition: transform 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.masking-panel__title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ui-text-100);
+  letter-spacing: -0.005em;
+}
+
+.masking-panel__subtitle {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--ui-text-050);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── add CTA ────────────────────────────────────────────────────── */
+.masking-panel__cta-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.masking-panel__add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  height: auto;
+  min-height: 38px;
+  padding: 8px 10px;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.005em;
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.masking-panel__add-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  color: var(--ui-text-075);
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ── section wrapper ─────────────────────────────────────────────── */
+.masking-panel__section {
+  padding: 14px 10px 4px;
+  flex-shrink: 0;
+}
+
+.masking-panel__section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 0 2px;
+  padding-bottom: 6px;
+}
+
+.masking-panel__section-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--ui-text-050);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.masking-panel__section-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--ui-bg-100);
+  color: var(--ui-text-075);
+  font-size: 0.65rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── mask list ───────────────────────────────────────────────────── */
+.masking-panel__masks {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.masking-panel__mask-card {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ui-text-075);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.1s ease,
+    box-shadow 0.15s ease;
+}
+
+.masking-panel__mask-card:hover {
+  background: var(--ui-bg-100);
+  color: var(--ui-text-100);
+}
+
+.masking-panel__mask-card.is-selected {
+  background: var(--ui-active-bg);
+  border-color: var(--ui-active-border);
+  color: var(--ui-text-100);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+}
+
+.masking-panel__mask-card:active {
+  transform: scale(0.985);
+}
+
+.masking-panel__mask-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ui-focus);
+}
+
+.masking-panel__mask-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ui-bg-200);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35) inset;
+  flex-shrink: 0;
+}
+
+.masking-panel__mask-name {
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.masking-panel__mask-status {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--ui-bg-100);
+  color: var(--ui-text-050);
+}
+
+.masking-panel__mask-status.is-on {
+  color: #a7e8c4;
+  background: rgba(80, 200, 130, 0.12);
+}
+
+.masking-panel__mask-status.is-off {
+  color: var(--ui-text-050);
+  background: var(--ui-bg-100);
+}
+
+/* ── empty state ─────────────────────────────────────────────────── */
+.masking-panel__empty {
+  margin: 16px;
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  border: 1px dashed var(--ui-line-200);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--ui-text-050);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.masking-panel__empty-icon {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ui-bg-100);
+  border: 1px solid var(--ui-line-100);
+  margin-bottom: 2px;
+}
+
+.masking-panel__empty-icon img {
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  filter: invert(1);
+}
+
+.masking-panel__empty-title {
+  margin: 0;
+  color: var(--ui-text-100);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.masking-panel__empty-hint {
+  margin: 0;
+  max-width: 22ch;
+  line-height: 1.45;
+  color: var(--ui-text-050);
+}
+
+/* ── settings card (name + chips) ────────────────────────────────── */
+.masking-panel__settings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.masking-panel__field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.masking-panel__label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ui-text-050);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-left: 2px;
+}
+
+.masking-panel__value {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ui-text-075);
+  font-variant-numeric: tabular-nums;
+  background: var(--ui-bg-100);
+  padding: 2px 7px;
+  border-radius: 5px;
+  border: 1px solid var(--ui-line-100);
+}
+
+.masking-panel__name-input {
+  width: 100%;
+  background: var(--ui-bg-050);
+  border: 1px solid var(--ui-line-100);
+  color: var(--ui-text-100);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.masking-panel__name-input:focus {
+  outline: none;
+  border-color: var(--ui-active-border);
+  box-shadow: 0 0 0 1px var(--ui-focus);
+}
+
+/* ── chip row (enabled / overlay / delete) ───────────────────────── */
+.masking-panel__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.masking-panel__chip-row+.masking-panel__chip-row {
+  margin-top: 6px;
+}
+
+.masking-panel__chip-row:last-child {
+  padding-bottom: 2px;
+}
+
+.masking-panel__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  padding: 0 11px;
+  border: 1px solid var(--ui-line-100);
+  border-radius: 999px;
+  background: var(--ui-bg-100);
+  color: var(--ui-text-075);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+.masking-panel__chip:hover {
+  background: var(--ui-bg-150);
+  border-color: var(--ui-line-200);
+  color: var(--ui-text-100);
+}
+
+.masking-panel__chip.is-on {
+  background: var(--ui-active-bg);
+  border-color: var(--ui-active-border);
+  color: var(--ui-text-100);
+}
+
+.masking-panel__chip:active {
+  transform: scale(0.96);
+}
+
+.masking-panel__chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ui-focus);
+}
+
+.masking-panel__chip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ui-text-050);
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.masking-panel__chip-dot.is-on {
+  background: #7af0a5;
+  box-shadow: 0 0 6px rgba(122, 240, 165, 0.55);
+}
+
+.masking-panel__chip--danger {
+  margin-left: auto;
+  color: var(--ui-danger);
+  background: var(--ui-danger-bg);
+  border-color: var(--ui-danger-border);
+}
+
+.masking-panel__chip--danger:hover {
+  background: rgba(255, 100, 80, 0.16);
+  color: var(--ui-danger);
+  border-color: rgba(255, 120, 100, 0.5);
+}
+
+/* ── color / threshold card ──────────────────────────────────────── */
+.masking-panel__card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--ui-bg-100);
+  border: 1px solid var(--ui-line-100);
+}
+
+.masking-panel__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.masking-panel__card-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ui-text-050);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.masking-panel__threshold {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.masking-panel__threshold-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── toggle (custom switch) ──────────────────────────────────────── */
+.masking-panel__toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ui-line-100);
+}
+
+.masking-panel__toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ui-text-075);
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 0;
+}
+
+.masking-panel__toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.masking-panel__toggle-track {
+  position: relative;
+  width: 30px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--ui-bg-200);
+  border: 1px solid var(--ui-line-200);
+  transition: background 0.18s ease, border-color 0.18s ease;
+  flex-shrink: 0;
+}
+
+.masking-panel__toggle-thumb {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ui-text-075);
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.masking-panel__toggle.is-on .masking-panel__toggle-track {
+  background: rgba(122, 240, 165, 0.35);
+  border-color: rgba(122, 240, 165, 0.45);
+}
+
+.masking-panel__toggle.is-on .masking-panel__toggle-thumb {
+  transform: translateX(14px);
+  background: #7af0a5;
+  box-shadow: 0 0 6px rgba(122, 240, 165, 0.55);
+}
+
+.masking-panel__toggle input:focus-visible+.masking-panel__toggle-track {
+  box-shadow: 0 0 0 1px var(--ui-focus);
+}
+
+.masking-panel__toggle-label {
+  letter-spacing: -0.005em;
+}
+
+/* ── accordion wrapper ───────────────────────────────────────────── */
+.masking-panel__accordion {
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+
+.masking-panel__accordion control-panel-header,
+.masking-panel__accordion control-panel-header[open] {
+  margin: 0;
+  padding: 10px 14px;
+  border-top: 1px solid var(--ui-line-100);
+}
+
+.masking-panel__accordion control-panel-header:first-of-type {
+  border-top: 0;
+}
+
+/* ── bottom-layout compactness ───────────────────────────────────── */
+.adjustment-panels[data-layout="bottom"].masking-panel .masking-panel__header {
+  padding: 10px 14px;
+}
+
+.adjustment-panels[data-layout="bottom"].masking-panel .masking-panel__cta-row,
+.adjustment-panels[data-layout="bottom"].masking-panel .masking-panel__section {
+  padding: 10px 14px 0;
+}
+
+.adjustment-panels[data-layout="bottom"].masking-panel .masking-panel__card {
+  gap: 10px;
+  padding: 12px;
+}
+
+/* ── responsive: medium ─────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .masking-panel__header {
+    grid-template-columns: 1.5rem 1fr;
+    padding: 12px 12px;
+  }
+
+  .masking-panel__subtitle {
+    display: none;
+  }
+
+  .masking-panel__cta-row,
+  .masking-panel__section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .masking-panel__empty {
+    margin: 12px;
+    width: calc(100% - 24px);
+    padding: 22px 14px;
+  }
+
+  .masking-panel__card {
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .masking-panel__chip-row {
+    flex-wrap: wrap;
+  }
+
+  .masking-panel__chip--danger {
+    margin-left: 0;
+  }
+
+  .masking-panel__toggle-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+/* ── responsive: very narrow (side rail, 360-440px) ─────────────── */
+@media (max-width: 440px) {
+  .masking-panel__header {
+    padding: 10px 10px;
+  }
+
+  .masking-panel__cta-row,
+  .masking-panel__section {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .masking-panel__card {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .masking-panel__mask-card {
+    padding: 7px 10px;
+  }
+
+  .masking-panel__chip {
+    height: 26px;
+    padding: 0 9px;
+    font-size: 11px;
+  }
+}
+
+/* ── responsive: ultra-wide (allows max content width) ─────────── */
+@media (min-width: 720px) {
+  .adjustment-panels[data-layout="side"].masking-panel {
+    /* keep cards tidy at wide viewports */
+    --masking-max-content: 560px;
+  }
+
+  .adjustment-panels[data-layout="side"].masking-panel .masking-panel__card,
+  .adjustment-panels[data-layout="side"].masking-panel .masking-panel__empty,
+  .adjustment-panels[data-layout="side"].masking-panel .masking-panel__settings,
+  .adjustment-panels[data-layout="side"].masking-panel .masking-panel__masks {
+    max-width: 100%;
+  }
+}
+
+
+/* ── Luminance mask panel ──────────────────────────────────────────── */
+
+.masking-panel__luminance-preview-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(to right, black, #333, #777, #bbb, white);
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+
+.masking-panel__tone-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.48);
+  margin-bottom: 8px;
+}
+
+/* ── Depth mask panel ────────────────────────────────────────────── */
+
+.masking-panel__depth-preview-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #111, #555, #999, #ddd);
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+
+/* Viewport control for image-space FX positions. The SVG is portalled to the
+   document so it follows the rendered image without being clipped by the
+   viewer or adjustment rail. */
+.fx-center-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  width: 100vw;
+  height: 100dvh;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.fx-center-overlay__handle {
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  outline: none;
+}
+
+.fx-center-overlay__handle:active {
+  cursor: grabbing;
+}
+
+.fx-center-overlay__hit {
+  fill: transparent;
+  stroke: none;
+  pointer-events: all;
+}
+
+.fx-center-overlay__ring {
+  fill: rgba(255, 255, 255, 0.18);
+  stroke: #ffffff;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55));
+}
+
+.fx-center-overlay__handle:hover .fx-center-overlay__ring,
+.fx-center-overlay__handle:focus-visible .fx-center-overlay__ring {
+  fill: rgba(255, 255, 255, 0.3);
+  stroke: #ffc04d;
+  stroke-width: 2.5;
+}

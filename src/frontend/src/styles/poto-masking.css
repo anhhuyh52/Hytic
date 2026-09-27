@@ -1,0 +1,220 @@
+.color-mask-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  touch-action: none;
+}
+
+.color-mask-overlay__point {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  background: var(--color-mask-sample-color, transparent);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+  transition: box-shadow 80ms linear;
+}
+
+.color-mask-overlay__point.is-dragging {
+  cursor: grabbing;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.35),
+    0 0 0 4px rgba(255, 255, 255, 0.18);
+}
+
+.color-mask-overlay__point::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.color-mask-overlay__point.is-radius-center {
+  background: var(--color-mask-sample-color, transparent);
+}
+
+.color-mask-overlay__ellipse {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid white;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
+  z-index: 25;
+  touch-action: none;
+}
+
+.color-mask-overlay__ellipse .handle {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+.color-mask-overlay__ellipse .handle::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: none;
+}
+
+.color-mask-overlay__ellipse .handle--top {
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+}
+
+.color-mask-overlay__ellipse .handle--bottom {
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.color-mask-overlay__ellipse .handle--right {
+  left: 100%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.color-mask-overlay__ellipse .handle--left {
+  left: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ─── Radial mask SVG overlay ──────────────────────────────────────────────── */
+
+.radial-mask-overlay {
+  position: absolute;
+  inset: 0;
+  /* pointer-events controlled per-element via inline style on the component */
+  pointer-events: none;
+  touch-action: none;
+  z-index: 20;
+}
+
+.radial-mask-overlay__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  /* SVG itself is non-interactive; individual elements opt in */
+  pointer-events: none;
+}
+
+.radial-mask-overlay__outline-shadow {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.25);
+  stroke-width: 3;
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.radial-mask-overlay__outline {
+  fill: none;
+  stroke: white;
+  stroke-width: 1.5;
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Hit ring: fill must be rgba(0,0,0,0) NOT "none".
+   SVG only hit-tests fill:none as transparent (ignores interior),
+   but fill:rgba(0,0,0,0) IS hit-testable over the whole area. */
+.radial-mask-overlay__hit {
+  fill: rgba(0, 0, 0, 0);
+  stroke: rgba(0, 0, 0, 0);
+  stroke-width: 24;
+  cursor: move;
+  pointer-events: all;
+}
+
+.radial-mask-overlay__center {
+  fill: white;
+  stroke: rgba(0, 0, 0, 0.55);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.radial-mask-overlay__handle {
+  fill: white;
+  stroke: rgba(0, 0, 0, 0.65);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.radial-mask-overlay__hit-handle {
+  fill: rgba(0, 0, 0, 0);
+  stroke: none;
+  pointer-events: all;
+}
+
+/* ─── Brush mask overlay ────────────────────────────────────────────────────── */
+
+.brush-mask-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: auto;
+  touch-action: none;
+  /* cursor: none prevents the default arrow competing with the circle cursor */
+  cursor: none;
+}
+
+/* When pan mode is active (future use), disable pointer capture */
+.brush-mask-overlay--pan {
+  pointer-events: none;
+}
+
+/* Show the default cursor while painting (brief feedback) */
+.brush-mask-overlay--painting {
+  cursor: none;
+}
+
+.brush-mask-overlay__cursor {
+  position: absolute;
+  width: var(--brush-size, 40px);
+  height: var(--brush-size, 40px);
+  border-radius: 9999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  will-change: left, top, width, height;
+}
+
+/* Dashed ring in erase mode */
+.brush-mask-overlay__cursor--erase {
+  border-style: dashed;
+}
+
+/* Inner highlight ring when edge-aware is active */
+.brush-mask-overlay__cursor--edge-aware {
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.65),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+}

@@ -1,0 +1,299 @@
+/* ============================================================
+   Poto — "Chroma" shared component styles (Phase 39).
+   Buttons, badges, panel cards, accordion sections, empty states.
+   ============================================================ */
+
+/* ── Buttons ───────────────────────────────────────────────────────── */
+.poto-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 16px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 550;
+  border-radius: var(--r-pill);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.poto-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.poto-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.poto-btn--spectrum {
+  color: #0c0b0a;
+  background: var(--spectrum);
+  font-weight: 600;
+}
+
+.poto-btn--spectrum:hover:not(:disabled) {
+  box-shadow: var(--shadow-lift);
+}
+
+.poto-btn--primary {
+  color: #0c0b0a;
+  background: var(--on-dark);
+}
+
+.poto-btn--ghost {
+  color: var(--ink);
+  background: transparent;
+  border-color: var(--line-2);
+}
+
+.poto-btn--ghost-dark {
+  color: var(--on-dark);
+  background: transparent;
+  border-color: var(--line-dark-2);
+}
+
+.poto-btn--ghost-dark:hover:not(:disabled) {
+  background: var(--char-3);
+}
+
+/* ── Badge ─────────────────────────────────────────────────────────── */
+.poto-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-dark);
+  color: var(--on-dark-2);
+  background: var(--char-3);
+}
+
+.poto-badge--info {
+  color: var(--a2);
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+.poto-badge--warn {
+  color: var(--a3);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+/* ── Panel card ────────────────────────────────────────────────────── */
+.poto-panel-card {
+  background: var(--char-2);
+  border: 1px solid var(--line-dark);
+  border-radius: var(--r-m);
+  padding: 14px;
+  color: var(--on-dark);
+}
+
+/* ── Accordion section (panel rail groups) ─────────────────────────── */
+.poto-section {
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.poto-section__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--char-2);
+  border: none;
+  color: var(--on-dark-2);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+}
+
+.poto-section__head:hover {
+  color: var(--on-dark);
+  background: var(--char-3);
+}
+
+.poto-section__icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  color: var(--on-dark-3);
+}
+
+.poto-section__label {
+  flex: 1;
+}
+
+.poto-section__chevron {
+  transition: transform 0.2s ease;
+  color: var(--on-dark-3);
+}
+
+.poto-section.is-open .poto-section__chevron {
+  transform: rotate(90deg);
+}
+
+.poto-section__body {
+  animation: poto-fade-in 0.25s ease;
+}
+
+@keyframes poto-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Empty state (cream / paper, mascot-led) ───────────────────────── */
+.empty-state {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  z-index: 5;
+  background: var(--viewer-empty-background-color);
+}
+
+.empty-state__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  max-width: 420px;
+  padding: 34px 36px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  box-shadow: var(--shadow-lift);
+  color: var(--ink);
+}
+
+.empty-state__mascot {
+  margin-bottom: 6px;
+}
+
+.empty-state__eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.empty-state__title {
+  font-family: var(--sans);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.empty-state__copy {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 34ch;
+}
+
+.empty-state__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.empty-state__file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Smaller inline empty (preset / reference panels) */
+.empty-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 16px 12px;
+  color: var(--on-dark-2);
+}
+
+.empty-inline__copy {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--on-dark-2);
+  max-width: 24ch;
+}
+
+/* ── Mascot ────────────────────────────────────────────────────────── */
+.chroma-mascot {
+  display: block;
+}
+
+/* ── Focus visibility (accessibility) ──────────────────────────────── */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--a2);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Reduced motion ────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .poto-btn,
+  .poto-section__chevron,
+  .poto-section__body {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ── Global toasts ─────────────────────────────────────────────────────
+   The root solid-toast Toaster mounts eagerly (app-wide), so its styles live
+   here in the eager bundle rather than the deferred editor-overlays sheet. */
+.kalar-toast {
+  width: min(calc(100vw - 2rem), 34rem) !important;
+  padding: 0.75rem 0.9rem !important;
+  border: 1px solid rgba(250, 250, 250, 0.12) !important;
+  border-radius: 9px !important;
+  background: #171717 !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.48) !important;
+  color: var(--theme-text-100, #f2f2f5) !important;
+  font-family: var(--sans, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Source Sans Pro", Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif) !important;
+  font-size: 0.82rem !important;
+  line-height: 1.4 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.poto-toast-message {
+  min-width: 0;
+}
+
+.poto-toast-message__details {
+  margin: 0.35rem 0 0;
+  padding-left: 1rem;
+  color: var(--theme-text-000, #a7a7b3);
+  font-size: 0.76rem;
+}

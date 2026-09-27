@@ -1,0 +1,10 @@
+{
+  "name": "hytic-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.12.1",
+  "scripts": {
+    "dev": "pnpm --dir frontend dev",
+    "build": "pnpm --dir frontend build"
+  }
+}

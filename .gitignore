@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build, test, and deploy artifacts
+dist/
+.artifacts/
+.nitro/
+.output/
+.vinxi/
+.vite/
+coverage/
+test-results/
+playwright-report/
+backend-deploy-temp/
+frontend-deploy-temp/
+*.tsbuildinfo
+*.zip
+*.log
+
+# Local secrets and machine-specific settings
+.env
+.env.local
+.env.*
+!.env.example
+!.env.*.example
+**/.claude/settings.local.json
+
+# This repo uses pnpm lockfiles.
+package-lock.json
+yarn.lock
+
+# Local command and migration output
+*.tfplan
+*.tfplan.*
+migration-temp/
+/out.json
+/plan*.txt
+/migration-result.json
+/signup.json
+/pricing-smoke.html
+/billing-plans-smoke.json
+
+# Terraform
+.terraform/
+.terraform.tfstate.lock.info
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+!*.tfvars.json.example
+backend.hcl
+
+# OS and IDE metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+

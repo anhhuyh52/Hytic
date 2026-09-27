@@ -1,0 +1,9 @@
+packages:
+  - frontend
+allowBuilds:
+  esbuild: true
+  exifreader: true
+# Temporary, exact exception approved for the existing lockfile entry. Remove
+# after nanoid@3.3.14 clears the minimum-release-age window.
+minimumReleaseAgeExclude:
+  - nanoid@3.3.14

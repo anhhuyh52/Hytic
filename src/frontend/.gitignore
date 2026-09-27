@@ -1,0 +1,25 @@
+# Created by https://www.toptal.com/developers/gitignore/api/react
+# Edit at https://www.toptal.com/developers/gitignore?templates=react
+
+### react ###
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+.env
+.env.local
+.output
+
+node_modules
+bower_components
+dist
+.parity-fixtures/
+.runtime-parity-results/
+*.sublime*
+.output/
+.cursor/
+
+psd
+thumb
+sketch

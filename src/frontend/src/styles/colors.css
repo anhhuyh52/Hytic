@@ -1,0 +1,177 @@
+:root {
+  /* ── Theme: hue-driven HSL system (ported from legacy package.min.css) ──── */
+  --theme-hue: 243;
+  --theme-saturation: 1;
+  --theme-5-sat: calc(5% * var(--theme-saturation));
+  --theme-10-sat: calc(10% * var(--theme-saturation));
+  --theme-15-sat: calc(15% * var(--theme-saturation));
+  --theme-primary: #d8b878;
+  --theme-primary-highest: #f0d8a0;
+  --theme-primary-higher: #e6c98a;
+  --theme-primary-lower: #b99552;
+  --theme-primary-lowest: #6f5731;
+  --theme-primary-subtle: rgba(216, 184, 120, 0.16);
+  --theme-text-000: hsl(var(--theme-hue), var(--theme-5-sat), 65%);
+  --theme-text-100: hsl(var(--theme-hue), var(--theme-15-sat), 90%);
+  --theme-black: hsl(var(--theme-hue), var(--theme-10-sat), 5%);
+  --theme-white: hsl(var(--theme-hue), var(--theme-5-sat), 99%);
+  --theme-surface-000: hsl(var(--theme-hue), var(--theme-10-sat), 10%);
+  --theme-surface-050: hsl(var(--theme-hue), calc(9% * var(--theme-saturation)), 12.5%);
+  --theme-surface-100: hsl(var(--theme-hue), calc(7% * var(--theme-saturation)), 15%);
+  --theme-surface-200: hsl(var(--theme-hue), var(--theme-5-sat), 20%);
+  --theme-surface-300: hsl(var(--theme-hue), var(--theme-5-sat), 25%);
+  --theme-higher-000: hsla(var(--theme-hue), var(--theme-15-sat), 99%, 0.02);
+  --theme-higher-050: hsla(var(--theme-hue), var(--theme-15-sat), 99%, 0.03);
+  --theme-higher-100: hsla(var(--theme-hue), var(--theme-15-sat), 99%, 0.05);
+  --theme-higher-200: hsla(var(--theme-hue), var(--theme-15-sat), 99%, 0.1);
+  --theme-higher-300: hsla(var(--theme-hue), var(--theme-15-sat), 99%, 0.15);
+  --theme-higher-400: hsla(var(--theme-hue), var(--theme-15-sat), 97%, 0.25);
+  --theme-higher-500: hsla(var(--theme-hue), var(--theme-15-sat), 97%, 0.42);
+  --theme-higher-600: hsla(var(--theme-hue), var(--theme-15-sat), 97%, 0.667);
+  --theme-higher-700: hsla(var(--theme-hue), var(--theme-15-sat), 97%, 0.833);
+  --theme-lower-000: hsla(var(--theme-hue), var(--theme-15-sat), 10%, 0.833);
+  --theme-lower-100: hsla(var(--theme-hue), var(--theme-15-sat), 10%, 0.667);
+  --theme-lower-200: hsla(var(--theme-hue), var(--theme-15-sat), 10%, 0.5);
+  --theme-lower-300: hsla(var(--theme-hue), var(--theme-15-sat), 10%, 0.35);
+  --theme-lower-400: hsla(var(--theme-hue), var(--theme-15-sat), 10%, 0.25);
+  --theme-lower-500: hsla(var(--theme-hue), var(--theme-15-sat), 10%, 0.167);
+  --theme-lower-600: hsla(var(--theme-hue), var(--theme-15-sat), 10%, 0.1);
+  --theme-lower-700: hsla(var(--theme-hue), var(--theme-15-sat), 10%, 0.05);
+  --transition-curve-in: cubic-bezier(0.4, 0.4, 0, 1);
+  --transition-curve-out: cubic-bezier(0.2, 1, 0.2, 1);
+  --theme-red: #ec1611;
+  --theme-yellow: #ffb82a;
+  --theme-green: #57e93c;
+  --theme-red-soft: #dd5757;
+  --theme-orange-soft: #ec8661;
+  --theme-yellow-soft: #ddbc57;
+  --theme-green-soft: #3faa43;
+  --theme-cyan-soft: #59c1ca;
+  --theme-blue-soft: #2c75d3;
+  --theme-magenta-soft: #7761ff;
+  --theme-pink-soft: #c06d97;
+  --pro-color: var(--theme-orange-soft);
+  --pro-color-subtle: rgba(236, 134, 97, 0.1);
+  --lum-gradient: linear-gradient(90deg, #242424, #cccccc);
+  --ctr-gradient: linear-gradient(270deg, #242424, #cccccc);
+  --temp-gradient: linear-gradient(90deg, var(--theme-blue-soft), var(--theme-yellow-soft));
+  --sat-gradient: linear-gradient(
+    90deg,
+    #7f7f7f,
+    #827f7c,
+    #818078,
+    #798378,
+    #6f867f,
+    #69878b,
+    #628a98,
+    #48949b,
+    #2d9d93,
+    #27a57e,
+    #43aa60,
+    #74ac3e,
+    #a8a823,
+    #e0792a,
+    #f8396b,
+    #9900cd
+  );
+  --spectrum-shadows: conic-gradient(#980202, #c38a03, #009412, #0080b4, #3d07ad, #a40084, #980202);
+  --spectrum-midtones: conic-gradient(
+    #d90f0f,
+    #dbc00a,
+    #0db41e,
+    #11bec1,
+    #5010d7,
+    #cf11ab,
+    #d90f0f
+  );
+  --spectrum-highlights: conic-gradient(
+    #f84e4e,
+    #e0d462,
+    #41b84d,
+    #74bec4,
+    #4b5ccc,
+    #b03c96,
+    #f84e4e
+  );
+
+  /* ── derived semantic tokens (re-tinted to the legacy hue) ─────────────── */
+  --bg: var(--theme-surface-000);
+  --bg-elevated: var(--theme-surface-050);
+  --surface: var(--theme-surface-100);
+  --surface-soft: var(--theme-surface-200);
+  --surface-hover: var(--theme-surface-300);
+  --text: var(--theme-text-100);
+  --text-soft: hsl(var(--theme-hue), var(--theme-5-sat), 78%);
+  --text-muted: var(--theme-text-000);
+  --text-disabled: hsl(var(--theme-hue), var(--theme-5-sat), 35%);
+  --border: var(--theme-higher-200);
+  --border-soft: var(--theme-higher-100);
+  --border-active: var(--theme-primary-lowest);
+  --accent: var(--theme-primary);
+  --accent-text: hsl(var(--theme-hue), var(--theme-10-sat), 6%);
+  --accent-amber: var(--theme-yellow);
+  --accent-amber-soft: var(--theme-primary-subtle);
+  --success: var(--theme-green-soft);
+  --warning: var(--theme-yellow-soft);
+  --danger: var(--theme-red-soft);
+  --info: var(--theme-blue-soft);
+  --canvas-bg: var(--theme-black);
+  --canvas-frame: var(--theme-surface-100);
+  --canvas-border: rgba(255, 255, 255, 0.07);
+
+  --cream: var(--theme-primary);
+  --cream-2: var(--theme-primary-higher);
+  --cream-3: var(--theme-primary-lower);
+  --paper: var(--theme-white);
+  --char: var(--theme-surface-000);
+  --char-2: var(--theme-surface-050);
+  --char-3: var(--theme-surface-100);
+  --char-4: var(--theme-surface-300);
+
+  /* ink */
+  --ink: var(--accent-text);
+  --ink-2: hsl(var(--theme-hue), var(--theme-10-sat), 28%);
+  --ink-3: var(--theme-text-000);
+  --on-dark: var(--theme-text-100);
+  --on-dark-2: var(--text-soft);
+  --on-dark-3: var(--theme-text-000);
+
+  /* accents (color companion) */
+  --emerald: var(--theme-green-soft);
+  --cyan: var(--theme-blue-soft);
+  --amber: var(--theme-yellow);
+  --magenta: var(--theme-magenta-soft);
+
+  --a1: var(--emerald);
+  --a2: var(--cyan);
+  --a3: var(--amber);
+
+  --spectrum: linear-gradient(90deg, var(--a1) 0%, var(--a2) 50%, var(--a3) 100%);
+  --spectrum-4: linear-gradient(
+    100deg,
+    var(--magenta) 0%,
+    var(--a1) 33%,
+    var(--a2) 66%,
+    var(--a3) 100%
+  );
+
+  --line: var(--theme-higher-100);
+  --line-2: var(--theme-higher-200);
+  --line-dark: var(--theme-higher-200);
+  --line-dark-2: var(--theme-higher-300);
+
+  /* ── Typography: Inter (Google Fonts) with system-font fallback stack ──── */
+  --sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Source Sans Pro", Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --maxw: 1200px;
+  --r-s: 10px;
+  --r-m: 16px;
+  --r-l: 24px;
+  --r-xl: 34px;
+
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.18), 0 8px 24px rgba(0, 0, 0, 0.22);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.22), 0 20px 50px -12px rgba(0, 0, 0, 0.4);
+  --shadow-dark: 0 2px 6px rgba(0, 0, 0, 0.4), 0 30px 70px -20px rgba(0, 0, 0, 0.65);
+}
