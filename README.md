@@ -18,7 +18,7 @@ There are no Homebrew, winget, or apt packages at this time.
 ## Screenshots
 
 <p align="center">
-  <img src="src/frontend/public/assets/img/editor_canvas.jpg" alt="Hytic photo editing workspace" width="800">
+  <img width="1912" height="1132" alt="image" src="https://github.com/user-attachments/assets/9f98d099-9378-4245-9414-a8ff1c3b8f7d" />
 </p>
 
 ## Why Hytic
