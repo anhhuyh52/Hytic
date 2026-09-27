@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="src/frontend/public/assets/poto_logo.svg" alt="Hytic" width="180">
-</p>
 
 <h1 align="center">Hytic</h1>
 
